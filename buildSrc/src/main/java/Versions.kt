@@ -9,7 +9,7 @@ object Versions {
     const val junit = "4.+"
     const val testExt = "1.1.3"
     const val espresso = "3.4.0"
-    const val room = "2.4.3"
+    const val room = "2.5.0"
     const val hilt = "2.42"
     const val hiltCompiler = "2.42"
     const val safeArgs = "2.5.2"

@@ -48,6 +48,7 @@ object Libs {
             const val ktx = "androidx.room:room-ktx:" + Versions.room
             const val runtime = "androidx.room:room-runtime:" + Versions.room
             const val compiler = "androidx.room:room-compiler:" + Versions.room
+            const val pagingSupport = "androidx.room:room-paging:" + Versions.room
         }
     }
 
