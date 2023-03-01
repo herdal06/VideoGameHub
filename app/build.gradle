@@ -76,6 +76,7 @@ dependencies {
     implementation Libs.Storage.dataStore
     implementation Libs.Storage.Room.ktx
     implementation Libs.Storage.Room.runtime
+    implementation Libs.Storage.Room.pagingSupport
     kapt Libs.Storage.Room.compiler
 
     // Hilt
