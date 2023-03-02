@@ -12,4 +12,11 @@ interface GameService {
         @Query("key") key: String = API_KEY,
         @Query("page") page: Int
     ): GameResponse
+
+    @GET("games")
+    suspend fun searchGames(
+        @Query("key") key: String = API_KEY,
+        @Query("search") searchQuery: String,
+        @Query("page") page: Int,
+    ): GameResponse
 }
