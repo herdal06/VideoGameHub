@@ -106,5 +106,9 @@ dependencies {
     // to detect memory leak
     debugImplementation Libs.LeakDetection.leakCanary
 
-    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+    // Paging3
+    implementation Libs.Paging.paging3
+
+    // Coroutines
+    implementation Libs.Kotlin.coroutines
 }

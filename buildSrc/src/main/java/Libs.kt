@@ -20,6 +20,10 @@ object Libs {
             "androidx.swiperefreshlayout:swiperefreshlayout:" + Versions.swipe_refresh_layout
     }
 
+    object Kotlin {
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:" + Versions.coroutines
+    }
+
     object Google {
         const val material = "com.google.android.material:material:" + Versions.material
         const val gson = "com.google.code.gson:gson:" + Versions.gson
@@ -70,5 +74,9 @@ object Libs {
 
     object LeakDetection {
         const val leakCanary = "com.squareup.leakcanary:leakcanary-android:" + Versions.leakCanary
+    }
+
+    object Paging {
+        const val paging3 = "androidx.paging:paging-runtime-ktx:" + Versions.paging
     }
 }
