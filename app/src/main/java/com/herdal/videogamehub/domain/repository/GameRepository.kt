@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GameRepository {
     fun getGames(): Flow<PagingData<GameUiModel>>
+    fun searchGames(searchQuery: String): Flow<PagingData<GameUiModel>>
 }
