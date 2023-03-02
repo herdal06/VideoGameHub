@@ -6,4 +6,6 @@
     <string name="favorite">Favorite</string>
     <string name="profile">Profile</string>
     <string name="game_image">game image</string>
+    <string name="search_games">Search for games</string>
+    <string name="error">Error!</string>
 </resources>
