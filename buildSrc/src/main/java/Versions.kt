@@ -25,4 +25,6 @@ object Versions {
     const val swipe_refresh_layout = "1.1.0"
     const val leakCanary = "2.10"
     const val dataStore = "1.0.0"
+    const val paging = "3.1.1"
+    const val coroutines = "1.6.4"
 }

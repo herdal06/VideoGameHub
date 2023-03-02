@@ -5,5 +5,5 @@ data class GameUiModel(
     val name: String,
     val background_image: String? = null,
     val metacritic: Int? = null,
-    val released: String,
+    val released: String? = null,
 )
