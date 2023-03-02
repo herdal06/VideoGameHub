@@ -16,24 +16,21 @@ data class GameDto(
     @Json(name = "metacritic")
     val metacritic: Int? = null,
     @Json(name = "released")
-    val released: String,
+    val released: String? = null,
 )
 
-fun GameDto.toGameEntity() =
-    GameEntity(
-        id = id,
-        name = name,
-        background_image = background_image!!,
-        metacritic = metacritic,
-        released = released
-    )
+fun GameDto.toGameEntity() = GameEntity(
+    id = id,
+    name = name,
+    background_image = background_image!!,
+    metacritic = metacritic,
+    released = released
+)
 
-fun GameDto.toGameUiModel() = background_image?.let {
-    GameUiModel(
-        id = id,
-        name = name,
-        background_image = it,
-        metacritic = metacritic,
-        released = released
-    )
-}
+fun GameDto.toGameUiModel() = GameUiModel(
+    id = id,
+    name = name,
+    background_image = background_image,
+    metacritic = metacritic,
+    released = released
+)

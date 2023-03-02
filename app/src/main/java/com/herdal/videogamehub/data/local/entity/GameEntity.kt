@@ -16,7 +16,7 @@ data class GameEntity(
     @ColumnInfo(name = "metacritic")
     val metacritic: Int? = null,
     @ColumnInfo(name = "released")
-    val released: String,
+    val released: String? = null,
 )
 
 fun GameEntity.toGameUiModel() =
