@@ -12,19 +12,18 @@ data class GameEntity(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "background_image")
-    val background_image: String,
+    val background_image: String? = null,
     @ColumnInfo(name = "metacritic")
-    val metacritic: Int,
+    val metacritic: Int? = null,
     @ColumnInfo(name = "released")
     val released: String,
 )
 
-fun GameEntity.toGameUiModel() = background_image?.let {
+fun GameEntity.toGameUiModel() =
     GameUiModel(
         id = id,
         name = name,
-        background_image = it,
+        background_image = background_image,
         metacritic = metacritic,
         released = released
     )
-}
