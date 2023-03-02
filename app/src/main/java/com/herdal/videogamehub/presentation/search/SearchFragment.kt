@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentSearchBinding
+import com.herdal.videogamehub.presentation.home.OnGameListClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,9 +20,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val searchGamesAdapter: GameAdapter by lazy {
-        GameAdapter(::onGameClick)
-    }
+    private lateinit var searchedGamesAdapter: GameAdapter
 
     private val viewModel: SearchViewModel by viewModels()
 
@@ -41,13 +41,18 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupRecyclerView() = binding.apply {
-        rvSearchedGames.adapter = searchGamesAdapter
+        searchedGamesAdapter = GameAdapter(object : OnGameListClickHandler {
+            override fun goToGameDetails(gameId: Int) {
+                goToGameDetailsScreen(gameId)
+            }
+        })
+        rvSearchedGames.adapter = searchedGamesAdapter
     }
 
     private fun searchGames(searchText: String) = binding.apply {
         viewModel.searchGames(searchText)
         collectLatestLifecycleFlow(viewModel.searchedGames) { pagingData ->
-            searchGamesAdapter.submitData(pagingData)
+            searchedGamesAdapter.submitData(pagingData)
         }
     }
 
@@ -65,8 +70,10 @@ class SearchFragment : Fragment() {
         }
     })
 
-    private fun onGameClick(gameId: Int) {
-
+    private fun goToGameDetailsScreen(gameId: Int) {
+        val action =
+            SearchFragmentDirections.actionSearchFragmentToGameDetailFragment(gameId = gameId)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

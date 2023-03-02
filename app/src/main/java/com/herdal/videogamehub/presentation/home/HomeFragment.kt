@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentHomeBinding
 import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
@@ -19,15 +20,13 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
 
-    private val gameAdapter: GameAdapter by lazy {
-        GameAdapter(::onGameClick)
-    }
+    private lateinit var gameAdapter: GameAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         collectGames()
@@ -47,11 +46,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() = binding.apply {
+        gameAdapter = GameAdapter(object : OnGameListClickHandler {
+            override fun goToGameDetails(gameId: Int) {
+                goToGameDetailsScreen(gameId)
+            }
+        })
         rvGames.adapter = gameAdapter
     }
 
-    private fun onGameClick(gameId: Int) {
-
+    private fun goToGameDetailsScreen(gameId: Int) {
+        val action = HomeFragmentDirections.actionHomeFragmentToGameDetailFragment(gameId = gameId)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
