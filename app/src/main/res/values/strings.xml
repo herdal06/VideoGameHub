@@ -5,4 +5,5 @@
     <string name="home">Home</string>
     <string name="favorite">Favorite</string>
     <string name="profile">Profile</string>
+    <string name="game_image">game image</string>
 </resources>
