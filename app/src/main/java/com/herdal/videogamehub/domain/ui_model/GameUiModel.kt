@@ -8,6 +8,6 @@ data class GameUiModel(
     val released: String? = null,
     val background_image_additional: String? = null,
     val description_raw: String? = null,
-    val rating: Int? = null,
+    val rating: Double? = null,
     val slug: String? = null,
 )
