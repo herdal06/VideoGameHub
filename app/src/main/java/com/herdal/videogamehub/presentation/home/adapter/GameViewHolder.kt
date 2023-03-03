@@ -16,7 +16,11 @@ class GameViewHolder(
         }
 
         itemView.setOnClickListener {
-            game.id.let { it1 -> onGameListClickHandler.goToGameDetails(it1) }
+            game.id.let { it1 ->
+                if (it1 != null) {
+                    onGameListClickHandler.goToGameDetails(it1)
+                }
+            }
         }
     }
 }
