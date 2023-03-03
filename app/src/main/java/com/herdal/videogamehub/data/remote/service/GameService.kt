@@ -24,7 +24,7 @@ interface GameService {
 
     @GET("games/{id}")
     suspend fun getGameDetails(
-        @Query("key") key: String,
-        @Path("id") id: Int
+        @Path("id") id: Int,
+        @Query("key") key: String = API_KEY
     ): GameDetailDto
 }
