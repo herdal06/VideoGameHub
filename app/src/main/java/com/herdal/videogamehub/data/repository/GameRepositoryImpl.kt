@@ -5,6 +5,7 @@ import com.herdal.videogamehub.data.local.AppDatabase
 import com.herdal.videogamehub.data.local.entity.toGameUiModel
 import com.herdal.videogamehub.data.paging.GameRemoteMediator
 import com.herdal.videogamehub.data.remote.dto.game.toGameUiModel
+import com.herdal.videogamehub.data.remote.dto.game_detail.toGameUiModel
 import com.herdal.videogamehub.data.remote.paging_source.GamePagingSource
 import com.herdal.videogamehub.data.remote.service.GameService
 import com.herdal.videogamehub.di.IoDispatcher
@@ -14,6 +15,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(
@@ -63,4 +65,9 @@ class GameRepositoryImpl @Inject constructor(
                 gameDto.toGameUiModel()
             }
         }.cachedIn(CoroutineScope(ioDispatcher))
+
+    override suspend fun getGameDetails(gameId: Int): GameUiModel =
+        withContext(ioDispatcher) {
+            gameService.getGameDetails(id = gameId).toGameUiModel()
+        }
 }
