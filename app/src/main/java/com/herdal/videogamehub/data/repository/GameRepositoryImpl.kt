@@ -42,7 +42,7 @@ class GameRepositoryImpl @Inject constructor(
             pagingSourceFactory = pagingSourceFactory
         ).flow.map { gameEntityPagingData ->
             gameEntityPagingData.map { gameEntity -> gameEntity.toGameUiModel() }
-        }
+        }.cachedIn(CoroutineScope(ioDispatcher))
     }
 
     override fun searchGames(searchQuery: String): Flow<PagingData<GameUiModel>> =
