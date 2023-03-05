@@ -1,18 +1,18 @@
-package com.herdal.videogamehub.presentation.home.adapter
+package com.herdal.videogamehub.presentation.favorite.games.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.herdal.videogamehub.common.base.BasePagingAdapter
-import com.herdal.videogamehub.databinding.ItemGameBinding
+import com.herdal.videogamehub.common.base.BaseListAdapter
+import com.herdal.videogamehub.databinding.ItemFavoriteGameBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.home.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.OnGameListClickHandler
 
-class GameAdapter(
+class FavoriteGameAdapter(
     private val onGameListClickHandler: OnGameListClickHandler,
     private val onFavoriteGameClickHandler: OnFavoriteGameClickHandler
-) : BasePagingAdapter<GameUiModel>(
+) : BaseListAdapter<GameUiModel>(
     itemsSame = { old, new -> old.id == new.id },
     contentsSame = { old, new -> old == new }
 ) {
@@ -21,8 +21,8 @@ class GameAdapter(
         inflater: LayoutInflater,
         viewType: Int
     ): RecyclerView.ViewHolder =
-        GameViewHolder(
-            ItemGameBinding.inflate(
+        FavoriteGameViewHolder(
+            ItemFavoriteGameBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -31,8 +31,8 @@ class GameAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is GameViewHolder -> {
-                getItem(position)?.let { game -> holder.bind(game) }
+            is FavoriteGameViewHolder -> {
+                getItem(position)?.let { favoriteGame -> holder.bind(favoriteGame) }
             }
         }
     }
