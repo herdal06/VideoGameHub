@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentHomeBinding
 import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
+import com.herdal.videogamehub.presentation.home.adapter.GenreAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +22,7 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
 
     private lateinit var gameAdapter: GameAdapter
+    private lateinit var genreAdapter: GenreAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +32,14 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         collectGames()
+        collectGenres()
         return view
+    }
+
+    private fun collectGenres() = binding.apply {
+        collectLatestLifecycleFlow(viewModel.genres) { result ->
+            genreAdapter.submitList(result)
+        }
     }
 
     private fun collectGames() {
@@ -51,11 +60,24 @@ class HomeFragment : Fragment() {
                 goToGameDetailsScreen(gameId)
             }
         })
+        genreAdapter = GenreAdapter(object : OnGenreListClickHandler {
+            override fun goToGenreDetails(genreId: Int) {
+                naviteToGenreDetails(genreId)
+            }
+        })
         rvGames.adapter = gameAdapter
+        rvGenres.adapter = genreAdapter
     }
 
     private fun goToGameDetailsScreen(gameId: Int) {
-        val action = HomeFragmentDirections.actionHomeFragmentToGameDetailFragment(gameId = gameId)
+        val action =
+            HomeFragmentDirections.actionHomeFragmentToGameDetailFragment(gameId = gameId)
+        findNavController().navigate(action)
+    }
+
+    private fun naviteToGenreDetails(genreId: Int) {
+        val action =
+            HomeFragmentDirections.actionHomeFragmentToGenreDetailFragment(genreId = genreId)
         findNavController().navigate(action)
     }
 
