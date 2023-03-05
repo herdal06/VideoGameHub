@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface FavoriteGameDao {
 
     @Query("SELECT * FROM favorite_games WHERE id=:id")
-    fun isGameFavorite(id: Int): FavoriteGameEntity?
+    suspend fun isGameFavorite(id: Int): FavoriteGameEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(favoriteGame: FavoriteGameEntity)

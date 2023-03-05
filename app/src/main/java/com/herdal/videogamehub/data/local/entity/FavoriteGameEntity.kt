@@ -18,7 +18,7 @@ data class FavoriteGameEntity(
     @ColumnInfo(name = "released")
     val released: String? = null,
     @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean? = false
+    var isFavorite: Boolean? = false
 )
 
 fun FavoriteGameEntity.toGameUiModel() =
