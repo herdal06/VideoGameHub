@@ -37,4 +37,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideGenreDao(db: AppDatabase) = db.genreDao()
+
+    @Singleton
+    @Provides
+    fun provideFavoriteGameDao(db: AppDatabase) = db.favoriteGameDao()
 }
