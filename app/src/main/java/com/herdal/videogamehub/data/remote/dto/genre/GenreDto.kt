@@ -7,34 +7,27 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class GenreDto(
-    @Json(name = "idCategory")
+    @Json(name = "id")
     val id: Int,
-    @Json(name = "idCategory")
+    @Json(name = "name")
     val name: String,
-    @Json(name = "idCategory")
+    @Json(name = "slug")
     val slug: String,
-    @Json(name = "idCategory")
-    val games_count: Int,
-    @Json(name = "idCategory")
+    @Json(name = "image_background")
     val image_background: String? = null
 )
 
-fun GenreDto.toGenreEntity() = image_background?.let {
-    GenreEntity(
-        id = id,
-        name = name,
-        slug = slug,
-        games_count = games_count,
-        image_background = it
-    )
-}
+fun GenreDto.toGenreEntity() = GenreEntity(
+    id = id,
+    name = name,
+    slug = slug,
+    image_background = image_background
+)
 
-fun GenreDto.toGenreUiModel() = image_background?.let {
-    GenreUiModel(
-        id = id,
-        name = name,
-        slug = slug,
-        games_count = games_count,
-        image_background = it
-    )
-}
+
+fun GenreDto.toGenreUiModel() = GenreUiModel(
+    id = id,
+    name = name,
+    slug = slug,
+    image_background = image_background
+)

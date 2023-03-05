@@ -22,7 +22,9 @@ object DatabaseModule {
         app,
         AppDatabase::class.java,
         DatabaseConstants.DATABASE_NAME
-    ).build()
+    )
+        .fallbackToDestructiveMigration()
+        .build()
 
     @Singleton
     @Provides
@@ -31,4 +33,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideGameRemoteKeyDao(db: AppDatabase) = db.gameRemoteKeyDao()
+
+    @Singleton
+    @Provides
+    fun provideGenreDao(db: AppDatabase) = db.genreDao()
 }

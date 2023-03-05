@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_gameDetailFragment"
             app:destination="@id/gameDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_genreDetailFragment"
+            app:destination="@id/genreDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
@@ -40,6 +43,15 @@
         tools:layout="@layout/fragment_game_detail">
         <argument
             android:name="gameId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/genreDetailFragment"
+        android:name="com.herdal.videogamehub.presentation.genre_detail.GenreDetailFragment"
+        android:label="Genre Details"
+        tools:layout="@layout/fragment_genre_detail">
+        <argument
+            android:name="genreId"
             app:argType="integer" />
     </fragment>
 </navigation>

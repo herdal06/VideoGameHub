@@ -9,20 +9,20 @@ import com.herdal.videogamehub.domain.ui_model.GenreUiModel
 data class GenreEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    @ColumnInfo(name = "idCategory")
+    @ColumnInfo(name = "name")
     val name: String,
-    @ColumnInfo(name = "idCategory")
+    @ColumnInfo(name = "slug")
     val slug: String,
-    @ColumnInfo(name = "idCategory")
-    val games_count: Int,
-    @ColumnInfo(name = "idCategory")
-    val image_background: String
+    @ColumnInfo(name = "image_background")
+    val image_background: String? = null,
+    @ColumnInfo(name = "description")
+    val description: String? = null
 )
 
 fun GenreEntity.toGenreUiModel() = GenreUiModel(
     id = id,
     name = name,
     slug = slug,
-    games_count = games_count,
-    image_background = image_background
+    image_background = image_background,
+    description = description
 )
