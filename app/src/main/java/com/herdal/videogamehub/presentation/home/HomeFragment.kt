@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentHomeBinding
+import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
 import com.herdal.videogamehub.presentation.home.adapter.GenreAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -59,6 +62,10 @@ class HomeFragment : Fragment() {
             override fun goToGameDetails(gameId: Int) {
                 goToGameDetailsScreen(gameId)
             }
+        }, object : OnFavoriteGameClickHandler {
+            override fun addGameToFavorite(game: GameUiModel) {
+                onFavoriteGameIconClicked(game)
+            }
         })
         genreAdapter = GenreAdapter(object : OnGenreListClickHandler {
             override fun goToGenreDetails(genreId: Int) {
@@ -79,6 +86,12 @@ class HomeFragment : Fragment() {
         val action =
             HomeFragmentDirections.actionHomeFragmentToGenreDetailFragment(genreId = genreId)
         findNavController().navigate(action)
+    }
+
+    private fun onFavoriteGameIconClicked(game: GameUiModel) {
+        lifecycleScope.launch {
+            viewModel.favoriteGameIconClicked(game)
+        }
     }
 
     override fun onDestroyView() {

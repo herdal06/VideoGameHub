@@ -7,12 +7,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentSearchBinding
+import com.herdal.videogamehub.domain.ui_model.GameUiModel
+import com.herdal.videogamehub.presentation.home.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.OnGameListClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -45,6 +49,10 @@ class SearchFragment : Fragment() {
             override fun goToGameDetails(gameId: Int) {
                 goToGameDetailsScreen(gameId)
             }
+        }, object : OnFavoriteGameClickHandler {
+            override fun addGameToFavorite(game: GameUiModel) {
+                onFavoriteGameIconClicked(game)
+            }
         })
         rvSearchedGames.adapter = searchedGamesAdapter
     }
@@ -74,6 +82,12 @@ class SearchFragment : Fragment() {
         val action =
             SearchFragmentDirections.actionSearchFragmentToGameDetailFragment(gameId = gameId)
         findNavController().navigate(action)
+    }
+
+    private fun onFavoriteGameIconClicked(game: GameUiModel) {
+        lifecycleScope.launch {
+            viewModel.favoriteGameIconClicked(game)
+        }
     }
 
     override fun onDestroyView() {
