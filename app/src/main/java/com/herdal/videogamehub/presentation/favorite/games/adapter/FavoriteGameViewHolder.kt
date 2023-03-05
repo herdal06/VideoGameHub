@@ -1,14 +1,14 @@
-package com.herdal.videogamehub.presentation.home.adapter
+package com.herdal.videogamehub.presentation.favorite.games.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import com.herdal.videogamehub.databinding.ItemGameBinding
+import com.herdal.videogamehub.databinding.ItemFavoriteGameBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.home.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.OnGameListClickHandler
 import com.herdal.videogamehub.utils.ext.executeWithAction
 
-class GameViewHolder(
-    private val binding: ItemGameBinding,
+class FavoriteGameViewHolder(
+    private val binding: ItemFavoriteGameBinding,
     private val onGameListClickHandler: OnGameListClickHandler,
     private val onFavoriteGameClickHandler: OnFavoriteGameClickHandler
 ) : RecyclerView.ViewHolder(binding.root) {

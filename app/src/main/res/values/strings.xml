@@ -7,6 +7,7 @@
     <string name="profile">Profile</string>
     <string name="game_image">game image</string>
     <string name="search_games">Search for games</string>
+    <string name="search_favorite_games">Search for your favorite games</string>
     <string name="error">Error!</string>
     <string name="tab_layout">favorite screen tab layout</string>
     <string name="games">Games</string>
