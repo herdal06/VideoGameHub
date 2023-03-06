@@ -14,4 +14,5 @@
     <string name="genres">Genres</string>
     <string name="top_rated_metacritic">Top Rated PC Games</string>
     <string name="metacritic_logo">metacritic logo</string>
+    <string name="related_games">Related Games</string>
 </resources>
