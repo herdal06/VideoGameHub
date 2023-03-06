@@ -29,4 +29,11 @@ interface GameService {
         @Path("id") id: Int,
         @Query("key") key: String = API_KEY
     ): GameDetailDto
+
+    @GET("games")
+    suspend fun getGamesByGenre(
+        @Query("key") key: String = API_KEY,
+        @Query("genre") genreId: Int,
+        @Query("page") page: Int,
+    ): GameResponse
 }
