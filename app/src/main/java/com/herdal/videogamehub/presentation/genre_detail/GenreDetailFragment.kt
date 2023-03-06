@@ -9,7 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGenreDetailBinding
+import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.ui_model.GenreUiModel
+import com.herdal.videogamehub.presentation.home.OnFavoriteGameClickHandler
+import com.herdal.videogamehub.presentation.home.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import com.herdal.videogamehub.utils.ext.hide
 import com.herdal.videogamehub.utils.ext.show
@@ -27,6 +31,8 @@ class GenreDetailFragment : Fragment() {
 
     private fun getGenreIdArgs() = navigationArgs.genreId
 
+    private lateinit var gamesByGenreAdapter: GameAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +41,13 @@ class GenreDetailFragment : Fragment() {
         _binding = FragmentGenreDetailBinding.inflate(inflater, container, false)
         val view = binding.root
         collectGenreDetails(getGenreIdArgs())
+        getGamesByGenre(getGenreIdArgs())
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
     }
 
     private fun collectGenreDetails(genreId: Int) = binding.apply {
@@ -59,12 +71,42 @@ class GenreDetailFragment : Fragment() {
         }
     }
 
+    private fun setupRecyclerView() = binding.apply {
+        gamesByGenreAdapter = GameAdapter(object : OnGameListClickHandler {
+            override fun goToGameDetails(gameId: Int) {
+                goToGameDetailsScreen(gameId)
+            }
+        }, object : OnFavoriteGameClickHandler {
+            override fun addGameToFavorite(game: GameUiModel) {
+                onFavoriteGameIconClicked(game)
+            }
+        })
+        rvGamesByGenre.adapter = gamesByGenreAdapter
+    }
+
+    private fun getGamesByGenre(genreId: Int) = binding.apply {
+        viewModel.getGamesByGenre(genreId)
+        collectLatestLifecycleFlow(viewModel.gamesByGenre) { pagingData ->
+            gamesByGenreAdapter.submitData(pagingData)
+        }
+    }
+
+    private fun onFavoriteGameIconClicked(game: GameUiModel) {
+
+    }
+
+    private fun goToGameDetailsScreen(gameId: Int) {
+
+    }
+
     private fun setupUI(genre: GenreUiModel?) = binding.apply {
         binding.genre = genre
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        //binding.rvGamesByGenre.adapter = null
     }
 }
