@@ -57,5 +57,8 @@
         <argument
             android:name="genreId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_genreDetailFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
     </fragment>
 </navigation>
