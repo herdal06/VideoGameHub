@@ -1,13 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.genre_detail.GenreDetailFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <data>
+
+        <import type="com.herdal.videogamehub.utils.StringFormatterKt" />
+
+        <variable
+            name="genre"
+            type="com.herdal.videogamehub.domain.ui_model.GenreUiModel" />
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bgColor"
+            android:orientation="vertical"
+            tools:context=".presentation.genre_detail.GenreDetailFragment">
+
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:downloadImage="@{genre.image_background}"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tvGenreDetailsName"
+                style="@style/Text.XXLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="@{genre.name}" />
+
+            <TextView
+                android:id="@+id/tvGenreDescription"
+                style="@style/WhiteText.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/double_extra_small_margin"
+                android:layout_marginTop="16dp"
+                android:text="@{StringFormatterKt.removePTag(genre.description)}" />
+
+            <TextView
+                android:id="@+id/tvGenreDetailError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/error"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/pbGenreDetails"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.4dp"
+                android:layout_gravity="center"
+                android:background="@color/bgColor"
+                android:paddingBottom="?attr/actionBarSize" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

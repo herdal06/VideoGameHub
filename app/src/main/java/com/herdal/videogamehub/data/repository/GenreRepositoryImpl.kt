@@ -2,6 +2,7 @@ package com.herdal.videogamehub.data.repository
 
 import androidx.room.withTransaction
 import com.herdal.videogamehub.data.local.AppDatabase
+import com.herdal.videogamehub.data.remote.dto.genre.genre_detail.GenreDetailDto
 import com.herdal.videogamehub.data.remote.dto.genre.toGenreEntity
 import com.herdal.videogamehub.data.remote.service.GenreService
 import com.herdal.videogamehub.domain.repository.GenreRepository
@@ -34,4 +35,8 @@ class GenreRepositoryImpl @Inject constructor(
             }
         }
     )
+
+    override suspend fun getGenreDetails(id: Int): GenreDetailDto {
+        return genreService.getGenreDetails(id = id)
+    }
 }
