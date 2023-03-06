@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGenreDetailBinding
@@ -18,6 +20,7 @@ import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import com.herdal.videogamehub.utils.ext.hide
 import com.herdal.videogamehub.utils.ext.show
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GenreDetailFragment : Fragment() {
@@ -92,21 +95,23 @@ class GenreDetailFragment : Fragment() {
     }
 
     private fun onFavoriteGameIconClicked(game: GameUiModel) {
-
+        lifecycleScope.launch {
+            viewModel.favoriteGameIconClicked(game)
+        }
     }
 
     private fun goToGameDetailsScreen(gameId: Int) {
-
+        val action =
+            GenreDetailFragmentDirections.actionGenreDetailFragmentToGameDetailFragment(gameId = gameId)
+        findNavController().navigate(action)
     }
 
     private fun setupUI(genre: GenreUiModel?) = binding.apply {
         binding.genre = genre
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        //binding.rvGamesByGenre.adapter = null
     }
 }

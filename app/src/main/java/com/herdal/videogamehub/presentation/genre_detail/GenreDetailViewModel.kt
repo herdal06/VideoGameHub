@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.ui_model.GenreUiModel
+import com.herdal.videogamehub.domain.use_case.AddOrRemoveGameFromFavoriteUseCase
 import com.herdal.videogamehub.domain.use_case.GetGamesByGenreUseCase
 import com.herdal.videogamehub.domain.use_case.GetGenreDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,12 +14,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GenreDetailViewModel @Inject constructor(
     private val getGenreDetailsUseCase: GetGenreDetailsUseCase,
-    private val getGamesByGenreUseCase: GetGamesByGenreUseCase
+    private val getGamesByGenreUseCase: GetGamesByGenreUseCase,
+    private val addOrRemoveGameFromFavoriteUseCase: AddOrRemoveGameFromFavoriteUseCase
 ) : ViewModel() {
 
     private val _genreDetails =
@@ -53,5 +56,11 @@ class GenreDetailViewModel @Inject constructor(
             .onEach { pagingData ->
                 _gamesByGenre.value = pagingData
             }.launchIn(viewModelScope)
+    }
+
+    fun favoriteGameIconClicked(game: GameUiModel) {
+        viewModelScope.launch {
+            addOrRemoveGameFromFavoriteUseCase.invoke(game)
+        }
     }
 }
