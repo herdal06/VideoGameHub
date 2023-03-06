@@ -12,4 +12,6 @@
     <string name="tab_layout">favorite screen tab layout</string>
     <string name="games">Games</string>
     <string name="genres">Genres</string>
+    <string name="top_rated_metacritic">Top Rated PC Games</string>
+    <string name="metacritic_logo">metacritic logo</string>
 </resources>

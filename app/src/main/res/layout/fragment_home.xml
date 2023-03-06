@@ -6,15 +6,30 @@
     android:layout_height="match_parent"
     android:background="@color/bgColor"
     android:orientation="vertical"
+    android:padding="@dimen/small_padding"
     tools:context=".presentation.home.HomeFragment">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvGenresText"
+            style="@style/Text.XXLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/genres" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGenres"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginBottom="@dimen/medium_margin"
+        android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_genre">
 
@@ -33,6 +48,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvTopRatedGamesText"
+            style="@style/Text.XXLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/top_rated_metacritic" />
+
+        <ImageView
+            android:id="@+id/ivMetacriticLogo"
+            android:layout_width="36dp"
+            android:contentDescription="@string/metacritic_logo"
+            android:layout_height="36dp"
+            android:layout_marginStart="@dimen/triple_extra_small_margin"
+            android:src="@drawable/metacritic_logo" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGames"
