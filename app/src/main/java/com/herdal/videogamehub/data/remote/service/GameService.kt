@@ -10,9 +10,11 @@ import retrofit2.http.Query
 interface GameService {
 
     @GET("games")
-    suspend fun getGames(
+    suspend fun getTopRatedPcGames(
         @Query("key") key: String = API_KEY,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("metacritic") metacritic: String = "90,100",
+        @Query("platform") platform: Int = 4 // PC's id is 4
     ): GameResponse
 
     @GET("games")

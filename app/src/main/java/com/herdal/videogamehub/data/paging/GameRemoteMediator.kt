@@ -33,7 +33,7 @@ class GameRemoteMediator(
         }
 
         try {
-            val response = gameService.getGames(page = page)
+            val response = gameService.getTopRatedPcGames(page = page)
             val isEndOfList = response.toString()
                 .contains("error") || response.results.isEmpty()
 
