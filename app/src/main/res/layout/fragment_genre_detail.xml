@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.herdal.videogamehub.utils.StringFormatterKt" />
+
         <variable
             name="genre"
             type="com.herdal.videogamehub.domain.ui_model.GenreUiModel" />
@@ -49,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/double_extra_small_margin"
                 android:layout_marginTop="16dp"
-                android:text="@{genre.description}" />
+                android:text="@{StringFormatterKt.removePTag(genre.description)}" />
 
             <TextView
                 android:id="@+id/tvGenreDetailError"
