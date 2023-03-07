@@ -41,4 +41,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideFavoriteGameDao(db: AppDatabase) = db.favoriteGameDao()
+
+    @Singleton
+    @Provides
+    fun provideStoreDao(db: AppDatabase) = db.storeDao()
 }
