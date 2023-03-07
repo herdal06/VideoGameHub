@@ -21,5 +21,5 @@ abstract class RepositoryModule {
     abstract fun bindGenreRepository(genreRepositoryImpl: GenreRepositoryImpl): GenreRepository
 
     @Binds
-    abstract fun bindFavoriteGameRepository(favorieGameRepositoryImpl: FavoriteGameRepositoryImpl): FavoriteGameRepository
+    abstract fun bindFavoriteGameRepository(favoriteGameRepositoryImpl: FavoriteGameRepositoryImpl): FavoriteGameRepository
 }
