@@ -7,6 +7,7 @@ import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.use_case.AddOrRemoveGameFromFavoriteUseCase
 import com.herdal.videogamehub.domain.use_case.GetGamesUseCase
 import com.herdal.videogamehub.domain.use_case.GetGenresUseCase
+import com.herdal.videogamehub.domain.use_case.GetStoresUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getGamesUseCase: GetGamesUseCase,
     getGenresUseCase: GetGenresUseCase,
+    getStoresUseCase: GetStoresUseCase,
     private val addOrRemoveGameFromFavoriteUseCase: AddOrRemoveGameFromFavoriteUseCase
 ) : ViewModel() {
 
@@ -24,6 +26,8 @@ class HomeViewModel @Inject constructor(
     val games = _games.asStateFlow()
 
     val genres = getGenresUseCase.invoke()
+
+    val stores = getStoresUseCase.invoke()
 
     fun getGames() {
         getGamesUseCase().onEach {

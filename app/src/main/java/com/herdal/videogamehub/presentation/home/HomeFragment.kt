@@ -12,6 +12,7 @@ import com.herdal.videogamehub.databinding.FragmentHomeBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
 import com.herdal.videogamehub.presentation.home.adapter.GenreAdapter
+import com.herdal.videogamehub.presentation.home.adapter.StoreAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var gameAdapter: GameAdapter
     private lateinit var genreAdapter: GenreAdapter
+    private lateinit var storeAdapter: StoreAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +38,14 @@ class HomeFragment : Fragment() {
         val view = binding.root
         collectGames()
         collectGenres()
+        collectStores()
         return view
+    }
+
+    private fun collectStores() {
+        collectLatestLifecycleFlow(viewModel.stores) { result ->
+            storeAdapter.submitList(result)
+        }
     }
 
     private fun collectGenres() = binding.apply {
@@ -72,8 +81,14 @@ class HomeFragment : Fragment() {
                 naviteToGenreDetails(genreId)
             }
         })
+        storeAdapter = StoreAdapter(object : OnStoreListClickHandler {
+            override fun onClickStoreItem(storeId: Int) {
+                TODO("Not yet implemented")
+            }
+        })
         rvGames.adapter = gameAdapter
         rvGenres.adapter = genreAdapter
+        rvStores.adapter = storeAdapter
     }
 
     private fun goToGameDetailsScreen(gameId: Int) {
