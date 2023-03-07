@@ -4,6 +4,7 @@ import androidx.viewbinding.BuildConfig
 import com.google.gson.Gson
 import com.herdal.videogamehub.data.remote.service.GameService
 import com.herdal.videogamehub.data.remote.service.GenreService
+import com.herdal.videogamehub.data.remote.service.StoreService
 import com.herdal.videogamehub.utils.constants.NetworkConstants.BASE_URL
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -87,4 +88,9 @@ object NetworkModule {
     @Singleton
     fun provideGenreService(retrofit: Retrofit): GenreService =
         retrofit.create(GenreService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideStoreService(retrofit: Retrofit): StoreService =
+        retrofit.create(StoreService::class.java)
 }

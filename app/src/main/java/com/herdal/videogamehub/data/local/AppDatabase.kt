@@ -2,23 +2,18 @@ package com.herdal.videogamehub.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.herdal.videogamehub.data.local.dao.FavoriteGameDao
-import com.herdal.videogamehub.data.local.dao.GameDao
-import com.herdal.videogamehub.data.local.dao.GameRemoteKeyDao
-import com.herdal.videogamehub.data.local.dao.GenreDao
-import com.herdal.videogamehub.data.local.entity.FavoriteGameEntity
-import com.herdal.videogamehub.data.local.entity.GameEntity
-import com.herdal.videogamehub.data.local.entity.GameRemoteKeyEntity
-import com.herdal.videogamehub.data.local.entity.GenreEntity
+import com.herdal.videogamehub.data.local.dao.*
+import com.herdal.videogamehub.data.local.entity.*
 
 @Database(
     entities = [
         GameEntity::class,
         GameRemoteKeyEntity::class,
         GenreEntity::class,
-        FavoriteGameEntity::class
+        FavoriteGameEntity::class,
+        StoreEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -26,4 +21,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun gameRemoteKeyDao(): GameRemoteKeyDao
     abstract fun genreDao(): GenreDao
     abstract fun favoriteGameDao(): FavoriteGameDao
+    abstract fun storeDao(): StoreDao
 }
