@@ -3,7 +3,7 @@ package com.herdal.videogamehub.data.repository
 import androidx.room.withTransaction
 import com.herdal.videogamehub.data.local.AppDatabase
 import com.herdal.videogamehub.data.local.entity.StoreEntity
-import com.herdal.videogamehub.data.remote.dto.toStoreEntity
+import com.herdal.videogamehub.data.remote.dto.store.toStoreEntity
 import com.herdal.videogamehub.data.remote.service.StoreService
 import com.herdal.videogamehub.domain.repository.StoreRepository
 import com.herdal.videogamehub.utils.Resource

@@ -1,4 +1,4 @@
-package com.herdal.videogamehub.data.remote.dto
+package com.herdal.videogamehub.data.remote.dto.store
 
 import com.herdal.videogamehub.data.local.entity.StoreEntity
 import com.squareup.moshi.Json
