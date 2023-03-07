@@ -80,9 +80,26 @@
             android:id="@+id/rvGames"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_game" />
+
+        <TextView
+            android:id="@+id/tvStoreText"
+            style="@style/Text.XXLarge"
+            android:layout_marginTop="@dimen/double_extra_small_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stores" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:paddingBottom="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
-            tools:listitem="@layout/item_game" />
+            tools:listitem="@layout/item_store" />
     </LinearLayout>
 </ScrollView>
