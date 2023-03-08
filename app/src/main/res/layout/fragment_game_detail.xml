@@ -47,6 +47,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivGameThumb" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvScreenshots"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/ss"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvGameDetailsName"
+                tools:listitem="@layout/item_screenshot" />
+
             <TextView
                 android:id="@+id/tvDesc"
                 style="@style/WhiteText"
@@ -58,8 +72,9 @@
                 android:paddingBottom="?attr/actionBarSize"
                 android:text="@{game.description_raw}"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvGameDetailsName" />
+                app:layout_constraintTop_toBottomOf="@+id/rvScreenshots" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
