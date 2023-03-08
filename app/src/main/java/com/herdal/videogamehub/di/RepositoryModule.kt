@@ -24,4 +24,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindTagRepository(tagRepositoryImpl: TagRepositoryImpl): TagRepository
+
+    @Binds
+    abstract fun bindScreenshotRepository(screenshotRepositoryImpl: ScreenshotRepositoryImpl): ScreenshotRepository
 }
