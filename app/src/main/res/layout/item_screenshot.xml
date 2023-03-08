@@ -16,8 +16,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivScreenshot"
-            android:layout_width="125dp"
-            android:layout_height="100dp"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
             android:downloadImage="@{screenshot.image}"
             tools:srcCompat="@tools:sample/avatars" />
     </com.google.android.material.card.MaterialCardView>
