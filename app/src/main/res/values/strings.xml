@@ -16,4 +16,5 @@
     <string name="metacritic_logo">metacritic logo</string>
     <string name="related_games">Related Games</string>
     <string name="stores">Stores</string>
+    <string name="game_tags">Game Tags</string>
 </resources>

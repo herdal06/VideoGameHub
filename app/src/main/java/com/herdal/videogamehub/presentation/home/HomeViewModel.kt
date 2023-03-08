@@ -4,10 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.domain.use_case.AddOrRemoveGameFromFavoriteUseCase
-import com.herdal.videogamehub.domain.use_case.GetGamesUseCase
-import com.herdal.videogamehub.domain.use_case.GetGenresUseCase
-import com.herdal.videogamehub.domain.use_case.GetStoresUseCase
+import com.herdal.videogamehub.domain.ui_model.TagUiModel
+import com.herdal.videogamehub.domain.use_case.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,7 +16,8 @@ class HomeViewModel @Inject constructor(
     private val getGamesUseCase: GetGamesUseCase,
     getGenresUseCase: GetGenresUseCase,
     getStoresUseCase: GetStoresUseCase,
-    private val addOrRemoveGameFromFavoriteUseCase: AddOrRemoveGameFromFavoriteUseCase
+    private val addOrRemoveGameFromFavoriteUseCase: AddOrRemoveGameFromFavoriteUseCase,
+    private val getTagsUseCase: GetTagsUseCase
 ) : ViewModel() {
 
     private val _games =
@@ -28,6 +27,10 @@ class HomeViewModel @Inject constructor(
     val genres = getGenresUseCase.invoke()
 
     val stores = getStoresUseCase.invoke()
+
+    private val _tags =
+        MutableStateFlow<PagingData<TagUiModel>>(PagingData.empty())
+    val tags = _tags.asStateFlow()
 
     fun getGames() {
         getGamesUseCase().onEach {
@@ -39,5 +42,11 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch { // viewModelScope.launch runs on the main thread by default. no need to inject Dispatchers.Main
             addOrRemoveGameFromFavoriteUseCase.invoke(game)
         }
+    }
+
+    fun getTags() {
+        getTagsUseCase().onEach {
+            _tags.emit(it)
+        }.launchIn(viewModelScope)
     }
 }

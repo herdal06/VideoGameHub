@@ -45,4 +45,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideStoreDao(db: AppDatabase) = db.storeDao()
+
+    @Singleton
+    @Provides
+    fun provideTagDao(db: AppDatabase) = db.tagDao()
 }

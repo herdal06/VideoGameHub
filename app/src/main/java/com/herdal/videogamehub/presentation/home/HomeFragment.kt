@@ -13,6 +13,7 @@ import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
 import com.herdal.videogamehub.presentation.home.adapter.GenreAdapter
 import com.herdal.videogamehub.presentation.home.adapter.StoreAdapter
+import com.herdal.videogamehub.presentation.home.adapter.TagAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ class HomeFragment : Fragment() {
     private lateinit var gameAdapter: GameAdapter
     private lateinit var genreAdapter: GenreAdapter
     private lateinit var storeAdapter: StoreAdapter
+    private lateinit var tagAdapter: TagAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +41,7 @@ class HomeFragment : Fragment() {
         collectGames()
         collectGenres()
         collectStores()
+        collectTags()
         return view
     }
 
@@ -58,6 +61,13 @@ class HomeFragment : Fragment() {
         viewModel.getGames()
         collectLatestLifecycleFlow(viewModel.games) {
             gameAdapter.submitData(it)
+        }
+    }
+
+    private fun collectTags() {
+        viewModel.getTags()
+        collectLatestLifecycleFlow(viewModel.tags) {
+            tagAdapter.submitData(it)
         }
     }
 
@@ -86,9 +96,12 @@ class HomeFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
+        tagAdapter = TagAdapter()
+
         rvGames.adapter = gameAdapter
         rvGenres.adapter = genreAdapter
         rvStores.adapter = storeAdapter
+        rvTags.adapter = tagAdapter
     }
 
     private fun goToGameDetailsScreen(gameId: Int) {

@@ -87,9 +87,9 @@
         <TextView
             android:id="@+id/tvStoreText"
             style="@style/Text.XXLarge"
-            android:layout_marginTop="@dimen/double_extra_small_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/double_extra_small_margin"
             android:text="@string/stores" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -97,9 +97,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="?attr/actionBarSize"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
             tools:listitem="@layout/item_store" />
+
+        <TextView
+            android:id="@+id/tvTagText"
+            style="@style/Text.XXLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/double_extra_small_margin"
+            android:text="@string/game_tags" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="?attr/actionBarSize"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_tag" />
     </LinearLayout>
 </ScrollView>
