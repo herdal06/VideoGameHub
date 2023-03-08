@@ -13,8 +13,8 @@ import com.herdal.videogamehub.databinding.FragmentFavoriteGamesBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.favorite.FavoriteFragmentDirections
 import com.herdal.videogamehub.presentation.favorite.games.adapter.FavoriteGameAdapter
-import com.herdal.videogamehub.presentation.home.OnFavoriteGameClickHandler
-import com.herdal.videogamehub.presentation.home.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.favorite.games.adapter.OnFavoriteGameClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 

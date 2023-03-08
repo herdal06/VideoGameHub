@@ -3,8 +3,9 @@ package com.herdal.videogamehub.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.herdal.videogamehub.utils.constants.DatabaseConstants
 
-@Entity(tableName = "game_remote_keys")
+@Entity(tableName = DatabaseConstants.EntityNames.GAME_REMOTE_KEYS)
 data class GameRemoteKeyEntity(
     @PrimaryKey
     val id: Int,

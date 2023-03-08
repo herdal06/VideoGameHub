@@ -13,9 +13,9 @@ import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGenreDetailBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.ui_model.GenreUiModel
-import com.herdal.videogamehub.presentation.home.OnFavoriteGameClickHandler
-import com.herdal.videogamehub.presentation.home.OnGameListClickHandler
-import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
+import com.herdal.videogamehub.presentation.favorite.games.adapter.OnFavoriteGameClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import com.herdal.videogamehub.utils.ext.hide
 import com.herdal.videogamehub.utils.ext.show

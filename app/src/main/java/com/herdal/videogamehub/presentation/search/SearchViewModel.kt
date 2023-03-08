@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.domain.use_case.AddOrRemoveGameFromFavoriteUseCase
-import com.herdal.videogamehub.domain.use_case.SearchGamesUseCase
+import com.herdal.videogamehub.domain.use_case.game.AddOrRemoveGameFromFavoriteUseCase
+import com.herdal.videogamehub.domain.use_case.game.SearchGamesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.herdal.videogamehub.domain.ui_model.TrailerUiModel
+import com.herdal.videogamehub.utils.constants.DatabaseConstants
 
-@Entity(tableName = "trailers")
+@Entity(tableName = DatabaseConstants.EntityNames.TRAILERS)
 data class TrailerEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,

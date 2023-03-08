@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.herdal.videogamehub.domain.ui_model.TagUiModel
+import com.herdal.videogamehub.utils.constants.DatabaseConstants
 
-@Entity(tableName = "tags")
+@Entity(tableName = DatabaseConstants.EntityNames.TAGS)
 data class TagEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,

@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.herdal.videogamehub.domain.ui_model.ScreenshotUiModel
+import com.herdal.videogamehub.utils.constants.DatabaseConstants
 
-@Entity(tableName = "screenshots")
+@Entity(tableName = DatabaseConstants.EntityNames.SCREENSHOTS)
 data class ScreenshotEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,

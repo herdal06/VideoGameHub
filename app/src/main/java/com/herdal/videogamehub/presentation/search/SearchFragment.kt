@@ -11,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentSearchBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.home.OnFavoriteGameClickHandler
-import com.herdal.videogamehub.presentation.home.OnGameListClickHandler
-import com.herdal.videogamehub.presentation.home.adapter.GameAdapter
+import com.herdal.videogamehub.presentation.favorite.games.adapter.OnFavoriteGameClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

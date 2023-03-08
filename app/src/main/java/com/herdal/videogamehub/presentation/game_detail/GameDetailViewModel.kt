@@ -6,9 +6,9 @@ import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.ui_model.ScreenshotUiModel
 import com.herdal.videogamehub.domain.ui_model.TrailerUiModel
-import com.herdal.videogamehub.domain.use_case.GetGameDetailsUseCase
-import com.herdal.videogamehub.domain.use_case.GetGameTrailersUseCase
-import com.herdal.videogamehub.domain.use_case.GetScreenshotsUseCase
+import com.herdal.videogamehub.domain.use_case.trailer.GetGameTrailersUseCase
+import com.herdal.videogamehub.domain.use_case.game.GetGameDetailsUseCase
+import com.herdal.videogamehub.domain.use_case.game_screenshots.GetScreenshotsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

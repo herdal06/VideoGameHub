@@ -5,7 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.ui_model.TagUiModel
-import com.herdal.videogamehub.domain.use_case.*
+import com.herdal.videogamehub.domain.use_case.game.AddOrRemoveGameFromFavoriteUseCase
+import com.herdal.videogamehub.domain.use_case.game.GetGamesUseCase
+import com.herdal.videogamehub.domain.use_case.genre.GetGenresUseCase
+import com.herdal.videogamehub.domain.use_case.store.GetStoresUseCase
+import com.herdal.videogamehub.domain.use_case.tag.GetTagsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

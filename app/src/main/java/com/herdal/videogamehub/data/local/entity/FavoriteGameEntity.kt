@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
+import com.herdal.videogamehub.utils.constants.DatabaseConstants
 
-@Entity(tableName = "favorite_games")
+@Entity(tableName = DatabaseConstants.EntityNames.FAVORITE_GAMES)
 data class FavoriteGameEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int?,

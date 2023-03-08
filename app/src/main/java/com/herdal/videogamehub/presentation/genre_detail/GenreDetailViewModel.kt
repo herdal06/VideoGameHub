@@ -6,9 +6,9 @@ import androidx.paging.PagingData
 import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.ui_model.GenreUiModel
-import com.herdal.videogamehub.domain.use_case.AddOrRemoveGameFromFavoriteUseCase
-import com.herdal.videogamehub.domain.use_case.GetGamesByGenreUseCase
-import com.herdal.videogamehub.domain.use_case.GetGenreDetailsUseCase
+import com.herdal.videogamehub.domain.use_case.game.AddOrRemoveGameFromFavoriteUseCase
+import com.herdal.videogamehub.domain.use_case.game.GetGamesByGenreUseCase
+import com.herdal.videogamehub.domain.use_case.genre.GetGenreDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -13,7 +13,7 @@ import com.herdal.videogamehub.R
 import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGameDetailBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.game_detail.adapter.ScreenshotAdapter
+import com.herdal.videogamehub.presentation.game_detail.adapter.screenshot.ScreenshotAdapter
 import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.OnTrailerClickHandler
 import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.TrailerAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
