@@ -49,4 +49,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideTagDao(db: AppDatabase) = db.tagDao()
+
+    @Singleton
+    @Provides
+    fun provideScreenshotDao(db: AppDatabase) = db.screenShotDao()
 }

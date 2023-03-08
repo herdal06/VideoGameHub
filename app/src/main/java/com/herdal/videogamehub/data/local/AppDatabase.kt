@@ -13,9 +13,10 @@ import com.herdal.videogamehub.data.local.entity.*
         FavoriteGameEntity::class,
         StoreEntity::class,
         TagEntity::class,
-        TagRemoteKeyEntity::class
+        TagRemoteKeyEntity::class,
+        ScreenshotEntity::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -26,4 +27,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun storeDao(): StoreDao
     abstract fun tagDao(): TagDao
     abstract fun tagRemoteKeyDao(): TagRemoteKeyDao
+    abstract fun screenShotDao(): ScreenshotDao
 }
