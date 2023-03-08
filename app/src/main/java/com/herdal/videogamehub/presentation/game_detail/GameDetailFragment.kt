@@ -12,6 +12,7 @@ import com.herdal.videogamehub.R
 import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGameDetailBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
+import com.herdal.videogamehub.presentation.game_detail.adapter.ScreenshotAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +27,8 @@ class GameDetailFragment : Fragment() {
 
     private fun getGameId() = navigationArgs.gameId
 
+    private val screenshotAdapter: ScreenshotAdapter by lazy { ScreenshotAdapter() }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +38,13 @@ class GameDetailFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_game_detail, container, false)
         val view = binding.root
         collectGameDetails(getGameId())
+        collectScreenshots(getGameId())
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
     }
 
     private fun collectGameDetails(gameId: Int) {
@@ -58,5 +67,16 @@ class GameDetailFragment : Fragment() {
 
     private fun setupUI(game: GameUiModel) = binding.apply {
         binding.game = game
+    }
+
+    private fun setupRecyclerView() = binding.apply {
+        rvScreenshots.adapter = screenshotAdapter
+    }
+
+    private fun collectScreenshots(gameId: Int) {
+        viewModel.getScreenshots(gameId = gameId)
+        collectLatestLifecycleFlow(viewModel.screenshots) {
+            screenshotAdapter.submitList(it)
+        }
     }
 }

@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
+import com.herdal.videogamehub.domain.ui_model.ScreenshotUiModel
 import com.herdal.videogamehub.domain.use_case.GetGameDetailsUseCase
+import com.herdal.videogamehub.domain.use_case.GetScreenshotsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,11 +16,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GameDetailViewModel @Inject constructor(
-    private val getGameDetailsUseCase: GetGameDetailsUseCase
+    private val getGameDetailsUseCase: GetGameDetailsUseCase,
+    private val getScreenshotsUseCase: GetScreenshotsUseCase
 ) : ViewModel() {
     private val _gameDetail =
         MutableStateFlow<Resource<GameUiModel>>(Resource.Loading())
     val gameDetail = _gameDetail.asStateFlow()
+
+    private val _screenshots =
+        MutableStateFlow<List<ScreenshotUiModel>>(emptyList())
+    val screenshots = _screenshots.asStateFlow()
 
     fun getGameById(id: Int) {
         getGameDetailsUseCase.invoke(id)
@@ -37,5 +44,11 @@ class GameDetailViewModel @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
+    }
+
+    fun getScreenshots(gameId: Int) {
+        getScreenshotsUseCase(gameId).onEach {
+            it?.let { _screenshots.emit(it) }
+        }.launchIn(viewModelScope)
     }
 }
