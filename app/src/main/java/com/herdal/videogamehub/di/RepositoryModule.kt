@@ -27,4 +27,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindScreenshotRepository(screenshotRepositoryImpl: ScreenshotRepositoryImpl): ScreenshotRepository
+
+    @Binds
+    abstract fun bindTrailerRepository(trailerRepositoryImpl: TrailerRepositoryImpl): TrailerRepository
 }

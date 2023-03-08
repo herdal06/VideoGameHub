@@ -53,4 +53,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideScreenshotDao(db: AppDatabase) = db.screenShotDao()
+
+    @Singleton
+    @Provides
+    fun provideTrailerDao(db: AppDatabase) = db.trailerDao()
 }

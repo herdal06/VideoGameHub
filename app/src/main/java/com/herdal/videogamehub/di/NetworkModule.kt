@@ -101,4 +101,9 @@ object NetworkModule {
     @Singleton
     fun provideScreenshotService(retrofit: Retrofit): ScreenshotService =
         retrofit.create(ScreenshotService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTrailerService(retrofit: Retrofit): TrailerService =
+        retrofit.create(TrailerService::class.java)
 }
