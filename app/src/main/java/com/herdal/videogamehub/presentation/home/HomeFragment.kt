@@ -17,6 +17,7 @@ import com.herdal.videogamehub.presentation.home.adapter.genre.GenreAdapter
 import com.herdal.videogamehub.presentation.home.adapter.genre.OnGenreListClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.store.OnStoreListClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.store.StoreAdapter
+import com.herdal.videogamehub.presentation.home.adapter.tag.OnTagClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.tag.TagAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,12 +101,21 @@ class HomeFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
-        tagAdapter = TagAdapter()
+        tagAdapter = TagAdapter(object : OnTagClickHandler {
+            override fun onClickTag(tagId: Int) {
+                navigateToGameByTagScreen(tagId)
+            }
+        })
 
         rvGames.adapter = gameAdapter
         rvGenres.adapter = genreAdapter
         rvStores.adapter = storeAdapter
         rvTags.adapter = tagAdapter
+    }
+
+    private fun navigateToGameByTagScreen(tagId: Int) {
+        val action = HomeFragmentDirections.actionHomeFragmentToGamesByTagFragment(tagId = tagId)
+        findNavController().navigate(action)
     }
 
     private fun goToGameDetailsScreen(gameId: Int) {

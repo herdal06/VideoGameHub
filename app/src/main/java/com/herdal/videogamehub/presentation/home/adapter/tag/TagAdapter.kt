@@ -7,7 +7,9 @@ import com.herdal.videogamehub.common.base.BasePagingAdapter
 import com.herdal.videogamehub.databinding.ItemTagBinding
 import com.herdal.videogamehub.domain.ui_model.TagUiModel
 
-class TagAdapter() : BasePagingAdapter<TagUiModel>(
+class TagAdapter(
+    private val onClickTagClickHandler: OnTagClickHandler
+) : BasePagingAdapter<TagUiModel>(
     itemsSame = { old, new -> old.id == new.id },
     contentsSame = { old, new -> old == new }
 ) {
@@ -21,7 +23,7 @@ class TagAdapter() : BasePagingAdapter<TagUiModel>(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), onClickTagClickHandler
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

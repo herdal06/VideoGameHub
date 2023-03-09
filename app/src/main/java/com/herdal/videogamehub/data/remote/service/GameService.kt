@@ -37,4 +37,11 @@ interface GameService {
         @Query("genres") genreId: Int,
         @Query("page") page: Int,
     ): GameResponse
+
+    @GET(NetworkConstants.Endpoints.GAMES)
+    suspend fun getGamesByTag(
+        @Query("key") key: String = API_KEY,
+        @Query("tags") tagId: Int,
+        @Query("page") page: Int,
+    ): GameResponse
 }

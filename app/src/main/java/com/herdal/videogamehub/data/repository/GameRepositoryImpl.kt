@@ -8,6 +8,7 @@ import com.herdal.videogamehub.data.remote.dto.game.toGameUiModel
 import com.herdal.videogamehub.data.remote.dto.game_detail.toGameUiModel
 import com.herdal.videogamehub.data.remote.paging_source.GamePagingSource
 import com.herdal.videogamehub.data.remote.paging_source.GamesByGenrePagingSource
+import com.herdal.videogamehub.data.remote.paging_source.GamesByTagPagingSource
 import com.herdal.videogamehub.data.remote.service.GameService
 import com.herdal.videogamehub.di.IoDispatcher
 import com.herdal.videogamehub.domain.repository.GameRepository
@@ -85,6 +86,25 @@ class GameRepositoryImpl @Inject constructor(
                 GamesByGenrePagingSource(
                     gameService = gameService,
                     genreId = genreId
+                )
+            }
+        ).flow.map { gameDtoPagingData ->
+            gameDtoPagingData.map { gameDto -> gameDto.toGameUiModel() }
+        }.cachedIn(CoroutineScope(ioDispatcher))
+
+    override fun getGamesByTag(tagId: Int): Flow<PagingData<GameUiModel>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 2,
+                maxSize = PagingConfig.MAX_SIZE_UNBOUNDED,
+                jumpThreshold = Int.MIN_VALUE,
+                enablePlaceholders = true
+            ),
+            pagingSourceFactory = {
+                GamesByTagPagingSource(
+                    gameService = gameService,
+                    tagId = tagId
                 )
             }
         ).flow.map { gameDtoPagingData ->
