@@ -58,9 +58,17 @@
                     android:text="@{genre.name}" />
 
                 <TextView
+                    android:id="@+id/tvDescriptionText"
+                    android:layout_width="match_parent"
+                    style="@style/Text.XLarge"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description" />
+
+                <TextView
                     android:id="@+id/tvGenreDescription"
                     style="@style/WhiteText.Large"
                     android:layout_width="wrap_content"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/double_extra_small_margin"
                     android:layout_marginTop="16dp"
@@ -95,7 +103,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingBottom="?attr/actionBarSize"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
                     tools:listitem="@layout/item_game" />
 
             </LinearLayout>

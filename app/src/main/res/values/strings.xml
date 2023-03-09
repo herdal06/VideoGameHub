@@ -18,4 +18,5 @@
     <string name="stores">Stores</string>
     <string name="game_tags">Game Tags</string>
     <string name="ss">game screenshots</string>
+    <string name="description">Description</string>
 </resources>
