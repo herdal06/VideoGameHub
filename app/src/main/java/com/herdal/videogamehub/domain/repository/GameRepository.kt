@@ -9,4 +9,5 @@ interface GameRepository {
     fun searchGames(searchQuery: String): Flow<PagingData<GameUiModel>>
     suspend fun getGameDetails(gameId: Int): GameUiModel
     fun getGamesByGenre(genreId: Int): Flow<PagingData<GameUiModel>>
+    fun getGamesByTag(tagId: Int): Flow<PagingData<GameUiModel>>
 }
