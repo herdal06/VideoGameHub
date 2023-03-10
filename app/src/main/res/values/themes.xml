@@ -15,6 +15,11 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <!-- Launcher theme. -->
+    <style name="SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
     <!-- MaterialCardView Style -->
     <style name="CardViewStyle" parent="Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/cardViewBgColor</item>
