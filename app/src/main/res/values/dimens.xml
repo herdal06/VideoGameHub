@@ -34,4 +34,8 @@
     <dimen name="double_extra_small_size">6sp</dimen>
     <dimen name="triple_extra_small_size">4sp</dimen>
 
+    <!-- card view -->
+    <dimen name="corner_radius">8dp</dimen>
+    <dimen name="elevation">12dp</dimen>
+
 </resources>

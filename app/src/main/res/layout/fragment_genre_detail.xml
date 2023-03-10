@@ -26,8 +26,8 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="6dp"
-                app:cardCornerRadius="6dp">
+                android:elevation="@dimen/corner_radius"
+                app:cardCornerRadius="@dimen/elevation">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imageView"
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/extra_small_margin"
                     android:text="@{genre.name}" />
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/double_extra_small_margin"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/large_margin"
                     android:text="@{StringFormatterKt.removePTag(genre.description)}" />
 
                 <TextView

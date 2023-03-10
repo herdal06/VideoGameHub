@@ -13,8 +13,8 @@
         android:id="@+id/cvGames"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="12dp"
+        app:cardCornerRadius="@dimen/corner_radius"
+        app:cardElevation="@dimen/elevation"
         app:cardUseCompatPadding="true">
 
         <androidx.appcompat.widget.SearchView
