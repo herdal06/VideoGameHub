@@ -1,4 +1,4 @@
-package com.herdal.videogamehub.presentation.favorite.games
+package com.herdal.videogamehub.presentation.favorite_games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

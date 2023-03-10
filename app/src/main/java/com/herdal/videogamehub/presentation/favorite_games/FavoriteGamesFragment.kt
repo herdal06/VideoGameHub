@@ -1,4 +1,4 @@
-package com.herdal.videogamehub.presentation.favorite.games
+package com.herdal.videogamehub.presentation.favorite_games
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentFavoriteGamesBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.favorite.FavoriteFragmentDirections
-import com.herdal.videogamehub.presentation.favorite.games.adapter.FavoriteGameAdapter
-import com.herdal.videogamehub.presentation.favorite.games.adapter.OnFavoriteGameClickHandler
+import com.herdal.videogamehub.presentation.favorite_games.adapter.FavoriteGameAdapter
+import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
@@ -96,7 +95,7 @@ class FavoriteGamesFragment : Fragment() {
 
     private fun goToGameDetailsScreen(gameId: Int) {
         val action =
-            FavoriteFragmentDirections.actionFavoriteFragmentToGameDetailFragment(gameId = gameId)
+            FavoriteGamesFragmentDirections.actionFavoriteGamesFragmentToGameDetailFragment(gameId = gameId)
         findNavController().navigate(action)
     }
 
@@ -109,6 +108,5 @@ class FavoriteGamesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        binding.rvFavoriteGames.adapter = null
     }
 }

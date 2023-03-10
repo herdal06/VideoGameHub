@@ -10,12 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentHomeBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.favorite.games.adapter.OnFavoriteGameClickHandler
+import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
 import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.genre.GenreAdapter
 import com.herdal.videogamehub.presentation.home.adapter.genre.OnGenreListClickHandler
-import com.herdal.videogamehub.presentation.home.adapter.store.OnStoreListClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.store.StoreAdapter
 import com.herdal.videogamehub.presentation.home.adapter.tag.OnTagClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.tag.TagAdapter
@@ -96,11 +95,7 @@ class HomeFragment : Fragment() {
                 naviteToGenreDetails(genreId)
             }
         })
-        storeAdapter = StoreAdapter(object : OnStoreListClickHandler {
-            override fun onClickStoreItem(storeId: Int) {
-                TODO("Not yet implemented")
-            }
-        })
+        storeAdapter = StoreAdapter()
         tagAdapter = TagAdapter(object : OnTagClickHandler {
             override fun onClickTag(tagId: Int) {
                 navigateToGameByTagScreen(tagId)

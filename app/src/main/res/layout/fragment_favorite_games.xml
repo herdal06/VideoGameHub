@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.favorite.games.FavoriteGamesFragment">
+    tools:context=".presentation.favorite_games.FavoriteGamesFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvFavoriteGames"

@@ -7,17 +7,10 @@ import com.herdal.videogamehub.utils.ext.executeWithAction
 
 class StoreViewHolder(
     private val binding: ItemStoreBinding,
-    private val onStoreListClickHandler: OnStoreListClickHandler
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(store: StoreUiModel) = binding.apply {
         binding.executeWithAction {
             this.store = store
-        }
-
-        itemView.setOnClickListener {
-            store.id.let { storeId ->
-                onStoreListClickHandler.onClickStoreItem(storeId = storeId)
-            }
         }
     }
 }

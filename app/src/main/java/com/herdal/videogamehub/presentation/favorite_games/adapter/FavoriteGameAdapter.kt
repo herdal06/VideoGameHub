@@ -1,4 +1,4 @@
-package com.herdal.videogamehub.presentation.favorite.games.adapter
+package com.herdal.videogamehub.presentation.favorite_games.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

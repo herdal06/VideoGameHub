@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.herdal.videogamehub.common.base.BasePagingAdapter
 import com.herdal.videogamehub.databinding.ItemGameBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.favorite.games.adapter.OnFavoriteGameClickHandler
+import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 
 class GameAdapter(
     private val onGameListClickHandler: OnGameListClickHandler,

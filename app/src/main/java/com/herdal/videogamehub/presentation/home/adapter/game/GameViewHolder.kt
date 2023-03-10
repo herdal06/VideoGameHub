@@ -3,7 +3,7 @@ package com.herdal.videogamehub.presentation.home.adapter.game
 import androidx.recyclerview.widget.RecyclerView
 import com.herdal.videogamehub.databinding.ItemGameBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.favorite.games.adapter.OnFavoriteGameClickHandler
+import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.utils.ext.executeWithAction
 
 class GameViewHolder(

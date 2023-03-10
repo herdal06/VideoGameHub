@@ -4,7 +4,7 @@
     <string name="search">Search</string>
     <string name="home">Home</string>
     <string name="favorite">Favorite</string>
-    <string name="profile">Profile</string>
+    <string name="favorite_games">Favorite Games</string>
     <string name="game_image">game image</string>
     <string name="search_games">Search for games</string>
     <string name="search_favorite_games">Search for your favorite games</string>

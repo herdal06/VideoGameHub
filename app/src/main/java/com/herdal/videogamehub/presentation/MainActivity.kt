@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.homeFragment,
                 R.id.searchFragment,
-                R.id.favoriteFragment,
-                R.id.profileFragment
+                R.id.favoriteGamesFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

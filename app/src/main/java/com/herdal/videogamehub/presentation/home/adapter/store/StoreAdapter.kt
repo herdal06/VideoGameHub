@@ -8,7 +8,6 @@ import com.herdal.videogamehub.databinding.ItemStoreBinding
 import com.herdal.videogamehub.domain.ui_model.StoreUiModel
 
 class StoreAdapter(
-    private val onStoreListClickHandler: OnStoreListClickHandler
 ) : BaseListAdapter<StoreUiModel>(
     itemsSame = { old, new -> old.id == new.id },
     contentsSame = { old, new -> old == new }
@@ -23,7 +22,7 @@ class StoreAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), onStoreListClickHandler
+            )
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
