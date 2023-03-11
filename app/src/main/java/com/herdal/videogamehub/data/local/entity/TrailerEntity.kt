@@ -3,7 +3,6 @@ package com.herdal.videogamehub.data.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.herdal.videogamehub.domain.ui_model.TrailerUiModel
 import com.herdal.videogamehub.utils.constants.DatabaseConstants
 
 @Entity(tableName = DatabaseConstants.EntityNames.TRAILERS)
@@ -16,11 +15,4 @@ data class TrailerEntity(
     val preview: String? = null,
     @ColumnInfo(name = "data")
     val data: String? = null
-)
-
-fun TrailerEntity.toTrailerUiModel() = TrailerUiModel(
-    id = this.id,
-    name = this.name,
-    preview = this.preview,
-    data = this.data
 )
