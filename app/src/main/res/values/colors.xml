@@ -12,13 +12,15 @@
     <color name="cardViewBgColor">#202020</color>
     <color name="orange">#FF9000</color>
 
-    <color name="primaryColor">#212121</color>
-    <color name="primaryLightColor">#484848</color>
-    <color name="primaryDarkColor">#000000</color>
-    <color name="secondaryColor">#ff6d00</color>
-    <color name="secondaryLightColor">#ff9e40</color>
-    <color name="secondaryDarkColor">#c43c00</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#000000</color>
+
     <color name="bg_splash_screen">#1E1E1E</color>
+
+    <color name="darkPrimaryColor">#DA7B00</color>
+    <color name="lightPrimaryColor">#FFCCBC</color>
+    <color name="primaryColor">#FF9000</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="accentColor">#FF9800</color>
+    <color name="primaryTextColor">#212121</color>
+    <color name="secondaryTextColor">#757575</color>
+    <color name="dividerColor">#BDBDBD</color>
 </resources>

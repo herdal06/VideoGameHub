@@ -17,7 +17,6 @@
         android:layout_marginVertical="@dimen/medium_padding"
         android:clickable="true"
         android:focusable="true"
-        app:cardBackgroundColor="@color/cardViewBgColor"
         app:cardCornerRadius="@dimen/medium_padding"
         tools:ignore="TouchTargetSizeCheck">
 
@@ -35,7 +34,7 @@
 
             <TextView
                 android:id="@+id/tvStoreName"
-                style="@style/WhiteText"
+                style="@style/PrimaryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

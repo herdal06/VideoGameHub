@@ -3,16 +3,21 @@
     <style name="Theme.VideoGameHub" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorPrimaryVariant">@color/darkPrimaryColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
-        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="colorSecondary">@color/accentColor</item>
+        <item name="colorSecondaryVariant">@color/accentColor</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Disable default opening screen -->
         <item name="android:windowIsTranslucent">true</item>
+
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+
+        <item name="android:windowBackground">#F2F3F5</item>
     </style>
 
     <!-- Launcher theme. -->
@@ -20,37 +25,43 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
+    <!-- TextView Style. -->
+    <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <!-- Buton Style. -->
+    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
     <!-- MaterialCardView Style -->
     <style name="CardViewStyle" parent="Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">@color/cardViewBgColor</item>
     </style>
 
     <!-- Text Style -->
     <style name="Text.Large" parent="@android:style/TextAppearance">
         <item name="android:textSize">@dimen/large_size</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
-    <style name="WhiteText" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/white</item>
+    <style name="PrimaryText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
-    <style name="WhiteText.Large" parent="@android:style/TextAppearance">
+    <style name="PrimaryText.Large" parent="@android:style/TextAppearance">
         <item name="android:textSize">@dimen/large_size</item>
-        <item name="android:textColor">@color/white</item>
     </style>
 
 
     <!-- Text Style -->
     <style name="Text.XLarge" parent="@android:style/TextAppearance">
         <item name="android:textSize">@dimen/extra_large_size</item>
-        <item name="android:textColor">@color/white</item>
     </style>
 
     <!-- Text Style -->
     <style name="Text.XXLarge" parent="@android:style/TextAppearance">
         <item name="android:textSize">@dimen/double_extra_large_size</item>
-        <item name="android:textColor">@color/white</item>
     </style>
 
     <!-- Tab Layout -->

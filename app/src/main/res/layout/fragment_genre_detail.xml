@@ -19,7 +19,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/bgColor"
             android:orientation="vertical"
             tools:context=".presentation.genre_detail.GenreDetailFragment">
 
@@ -59,20 +58,21 @@
 
                 <TextView
                     android:id="@+id/tvDescriptionText"
-                    android:layout_width="match_parent"
                     style="@style/Text.XLarge"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_small_margin"
                     android:text="@string/description" />
 
                 <TextView
                     android:id="@+id/tvGenreDescription"
-                    style="@style/WhiteText.Large"
+                    style="@style/PrimaryText.Large"
                     android:layout_width="wrap_content"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/double_extra_small_margin"
                     android:layout_marginTop="@dimen/large_margin"
-                    android:text="@{StringFormatterKt.removePTag(genre.description)}" />
+                    android:text="@{StringFormatterKt.removePTag(genre.description)}"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tvGenreDetailError"
