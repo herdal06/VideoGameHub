@@ -12,8 +12,10 @@ import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentSearchBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
-import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.search.adapter.genre_without_image.GenreWithoutImageAdapter
+import com.herdal.videogamehub.presentation.search.adapter.genre_without_image.OnGenreWithoutImageClickHandler
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,6 +27,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var searchedGamesAdapter: GameAdapter
+    private lateinit var genreAdapter: GenreWithoutImageAdapter
 
     private val viewModel: SearchViewModel by viewModels()
 
@@ -36,6 +39,7 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val view = binding.root
         setupSearchView()
+        collectGenres()
         return view
     }
 
@@ -54,12 +58,32 @@ class SearchFragment : Fragment() {
                 onFavoriteGameIconClicked(game)
             }
         })
+        genreAdapter = GenreWithoutImageAdapter(object : OnGenreWithoutImageClickHandler {
+            override fun getGamesByGenre(genreId: Int) {
+                getGamesByGenreId(genreId = genreId)
+            }
+        })
         rvSearchedGames.adapter = searchedGamesAdapter
+        rvGenreSearch.adapter = genreAdapter
     }
 
     private fun searchGames(searchText: String) = binding.apply {
         viewModel.searchGames(searchText)
         collectLatestLifecycleFlow(viewModel.searchedGames) { pagingData ->
+            searchedGamesAdapter.submitData(pagingData)
+        }
+    }
+
+    private fun collectGenres() {
+        viewModel.getGenres()
+        collectLatestLifecycleFlow(viewModel.genres) { genres ->
+            genreAdapter.submitList(genres)
+        }
+    }
+
+    private fun getGamesByGenreId(genreId: Int) {
+        viewModel.getGamesByGenre(genreId)
+        collectLatestLifecycleFlow(viewModel.gamesByGenre) { pagingData ->
             searchedGamesAdapter.submitData(pagingData)
         }
     }

@@ -72,5 +72,9 @@
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
     </style>
+
+    <style name="Text.Large.WhiteText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>
 

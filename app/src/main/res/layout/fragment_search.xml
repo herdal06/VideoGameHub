@@ -25,6 +25,14 @@
             app:queryHint="@string/search_games" />
     </com.google.android.material.card.MaterialCardView>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGenreSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_game" />
+
     <ProgressBar
         android:id="@+id/pbSearch"
         style="?android:attr/progressBarStyle"
