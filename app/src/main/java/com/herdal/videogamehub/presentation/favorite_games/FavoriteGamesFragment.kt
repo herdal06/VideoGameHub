@@ -15,6 +15,8 @@ import com.herdal.videogamehub.presentation.favorite_games.adapter.FavoriteGameA
 import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
+import com.herdal.videogamehub.utils.ext.hide
+import com.herdal.videogamehub.utils.ext.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -62,14 +64,20 @@ class FavoriteGamesFragment : Fragment() {
         collectLatestLifecycleFlow(viewModel.searchedFavGames) { resource ->
             when (resource) {
                 is Resource.Loading -> {
-
+                    pbFavoriteGames.show()
+                    tvFavoriteGamesError.hide()
+                    rvFavoriteGames.hide()
                 }
                 is Resource.Success -> {
-
+                    pbFavoriteGames.hide()
+                    tvFavoriteGamesError.hide()
                     favoriteGameAdapter.submitList(resource.data)
+                    rvFavoriteGames.show()
                 }
                 is Resource.Error -> {
-
+                    pbFavoriteGames.hide()
+                    tvFavoriteGamesError.show()
+                    rvFavoriteGames.hide()
                 }
             }
         }

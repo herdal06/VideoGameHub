@@ -42,45 +42,37 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
-        collectGames()
-        collectGenres()
-        collectStores()
-        collectTags()
+        collectFlows()
         return view
     }
 
-    private fun collectStores() {
-        collectLatestLifecycleFlow(viewModel.stores) { result ->
-            storeAdapter.submitList(result)
+    private fun collectFlows() {
+        // collect stores
+        collectLatestLifecycleFlow(viewModel.stores) { stores ->
+            storeAdapter.submitList(stores)
         }
-    }
-
-    private fun collectGenres() = binding.apply {
-        collectLatestLifecycleFlow(viewModel.genres) { result ->
-            genreAdapter.submitList(result)
+        // collect genres
+        collectLatestLifecycleFlow(viewModel.genres) { genres ->
+            genreAdapter.submitList(genres)
         }
-    }
-
-    private fun collectGames() {
+        // collect games
         viewModel.getGames()
-        collectLatestLifecycleFlow(viewModel.games) {
-            gameAdapter.submitData(it)
+        collectLatestLifecycleFlow(viewModel.games) { gamePagingData ->
+            gameAdapter.submitData(gamePagingData)
         }
-    }
-
-    private fun collectTags() {
+        // collect tags
         viewModel.getTags()
-        collectLatestLifecycleFlow(viewModel.tags) {
-            tagAdapter.submitData(it)
+        collectLatestLifecycleFlow(viewModel.tags) { tagPagingData ->
+            tagAdapter.submitData(tagPagingData)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerViews()
+        initRecyclerViews()
     }
 
-    private fun setupRecyclerViews() = binding.apply {
+    private fun initRecyclerViews() {
         gameAdapter = GameAdapter(object : OnGameListClickHandler {
             override fun goToGameDetails(gameId: Int) {
                 goToGameDetailsScreen(gameId)
@@ -101,7 +93,10 @@ class HomeFragment : Fragment() {
                 navigateToGameByTagScreen(tagId)
             }
         })
+        setupRecyclerViews()
+    }
 
+    private fun setupRecyclerViews() = binding.apply {
         rvGames.adapter = gameAdapter
         rvGenres.adapter = genreAdapter
         rvStores.adapter = storeAdapter

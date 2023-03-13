@@ -32,7 +32,7 @@ class GamesByTagViewModel @Inject constructor(
     }
 
     fun favoriteGameIconClicked(game: GameUiModel) {
-        viewModelScope.launch { // viewModelScope.launch runs on the main thread by default. no need to inject Dispatchers.Main
+        viewModelScope.launch {
             addOrRemoveGameFromFavoriteUseCase.invoke(game)
         }
     }

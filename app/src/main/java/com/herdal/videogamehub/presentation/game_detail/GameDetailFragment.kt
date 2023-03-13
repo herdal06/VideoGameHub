@@ -17,6 +17,8 @@ import com.herdal.videogamehub.presentation.game_detail.adapter.screenshot.Scree
 import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.OnTrailerClickHandler
 import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.TrailerAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
+import com.herdal.videogamehub.utils.ext.hide
+import com.herdal.videogamehub.utils.ext.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,19 +54,22 @@ class GameDetailFragment : Fragment() {
         setupRecyclerView()
     }
 
-    private fun collectGameDetails(gameId: Int) {
+    private fun collectGameDetails(gameId: Int) = binding.apply {
         viewModel.getGameById(gameId)
         collectLatestLifecycleFlow(viewModel.gameDetail) { resource ->
             when (resource) {
                 is Resource.Loading -> {
-
+                    pbGameDetail.show()
+                    tvGameDetailError.hide()
                 }
                 is Resource.Success -> {
-
+                    pbGameDetail.hide()
+                    tvGameDetailError.hide()
                     resource.data?.let { setupUI(it) }
                 }
                 is Resource.Error -> {
-
+                    pbGameDetail.hide()
+                    tvGameDetailError.show()
                 }
             }
         }
@@ -106,10 +111,6 @@ class GameDetailFragment : Fragment() {
 
                 }
             }
-            /*resource.data?.let {
-                binding.rvTrailers.isVisible = it.isEmpty()
-            }
-             */
         }
     }
 }
