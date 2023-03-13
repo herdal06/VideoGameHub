@@ -7,4 +7,20 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="bgColor">#151515</color>
+    <color name="cardViewBgColor">#202020</color>
+    <color name="orange">#FF9000</color>
+
+
+    <color name="bg_splash_screen">#1E1E1E</color>
+
+    <color name="darkPrimaryColor">#DA7B00</color>
+    <color name="lightPrimaryColor">#FFCCBC</color>
+    <color name="primaryColor">#FF9000</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="accentColor">#FF9800</color>
+    <color name="primaryTextColor">#212121</color>
+    <color name="secondaryTextColor">#757575</color>
+    <color name="dividerColor">#BDBDBD</color>
 </resources>

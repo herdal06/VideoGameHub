@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="genre"
+            type="com.herdal.videogamehub.domain.ui_model.GenreUiModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/medium_margin"
+        style="@style/CardViewStyle"
+        app:cardCornerRadius="@dimen/small_padding">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/small_padding">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivGenreThumb"
+                    android:layout_width="150dp"
+                    android:layout_height="125dp"
+                    android:downloadImage="@{genre.image_background}"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvGenreName"
+                style="@style/Text.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/medium_margin"
+                android:gravity="center"
+                android:text="@{genre.name}" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

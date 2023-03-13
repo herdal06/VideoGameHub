@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.herdal.videogamehub.presentation.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_genreDetailFragment"
+            app:destination="@id/genreDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_gamesByTagFragment"
+            app:destination="@id/gamesByTagFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.herdal.videogamehub.presentation.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="com.herdal.videogamehub.presentation.game_detail.GameDetailFragment"
+        android:label="Game Details"
+        tools:layout="@layout/fragment_game_detail">
+        <argument
+            android:name="gameId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/genreDetailFragment"
+        android:name="com.herdal.videogamehub.presentation.genre_detail.GenreDetailFragment"
+        android:label="Genre Details"
+        tools:layout="@layout/fragment_genre_detail">
+        <argument
+            android:name="genreId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_genreDetailFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gamesByTagFragment"
+        android:name="com.herdal.videogamehub.presentation.games_by_tag.GamesByTagFragment"
+        android:label="Games By Tag"
+        tools:layout="@layout/fragment_games_by_tag" >
+        <argument
+            android:name="tagId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_gamesByTagFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteGamesFragment"
+        android:name="com.herdal.videogamehub.presentation.favorite_games.FavoriteGamesFragment"
+        android:label="Favorite Games"
+        tools:layout="@layout/fragment_favorite_games" >
+        <action
+            android:id="@+id/action_favoriteGamesFragment_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
+    </fragment>
+</navigation>

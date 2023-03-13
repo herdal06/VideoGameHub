@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="trailer"
+            type="com.herdal.videogamehub.domain.ui_model.TrailerUiModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/extra_small_margin">
+
+        <com.google.android.material.imageview.ShapeableImageView
+             android:layout_width="200dp"
+             android:layout_height="150dp"
+             android:downloadImage="@{trailer.preview}" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

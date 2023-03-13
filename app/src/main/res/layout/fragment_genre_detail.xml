@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.herdal.videogamehub.utils.StringFormatterKt" />
+
+        <variable
+            name="genre"
+            type="com.herdal.videogamehub.domain.ui_model.GenreUiModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:context=".presentation.genre_detail.GenreDetailFragment">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/corner_radius"
+                app:cardCornerRadius="@dimen/elevation">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:downloadImage="@{genre.image_background}"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@tools:sample/avatars" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/double_extra_small_padding">
+
+                <TextView
+                    android:id="@+id/tvGenreDetailsName"
+                    style="@style/Text.XXLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/extra_small_margin"
+                    android:text="@{genre.name}" />
+
+                <TextView
+                    android:id="@+id/tvDescriptionText"
+                    style="@style/Text.XLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/extra_small_margin"
+                    android:text="@string/description" />
+
+                <TextView
+                    android:id="@+id/tvGenreDescription"
+                    style="@style/PrimaryText.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/double_extra_small_margin"
+                    android:layout_marginTop="@dimen/large_margin"
+                    android:text="@{StringFormatterKt.removePTag(genre.description)}"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvGenreDetailError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/error"
+                    android:visibility="gone" />
+
+                <ProgressBar
+                    android:id="@+id/pbGenreDetails"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvRelatedGamesText"
+                    style="@style/Text.XXLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/related_games" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvGamesByGenre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="?attr/actionBarSize"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
+                    tools:listitem="@layout/item_game" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>
