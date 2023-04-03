@@ -8,7 +8,7 @@ import com.herdal.videogamehub.databinding.ItemTagBinding
 import com.herdal.videogamehub.domain.ui_model.TagUiModel
 
 class TagAdapter(
-    private val onClickTagClickHandler: OnTagClickHandler
+    private val onClickTagClickHandler: OnTagClickListener
 ) : BasePagingAdapter<TagUiModel>(
     itemsSame = { old, new -> old.id == new.id },
     contentsSame = { old, new -> old == new }

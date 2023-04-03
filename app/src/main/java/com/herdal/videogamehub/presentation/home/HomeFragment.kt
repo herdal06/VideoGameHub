@@ -10,13 +10,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentHomeBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
-import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListener
 import com.herdal.videogamehub.presentation.home.adapter.genre.GenreAdapter
-import com.herdal.videogamehub.presentation.home.adapter.genre.OnGenreListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.genre.OnGenreClickListener
 import com.herdal.videogamehub.presentation.home.adapter.store.StoreAdapter
-import com.herdal.videogamehub.presentation.home.adapter.tag.OnTagClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.tag.OnTagClickListener
 import com.herdal.videogamehub.presentation.home.adapter.tag.TagAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,22 +72,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRecyclerViews() {
-        gameAdapter = GameAdapter(object : OnGameListClickHandler {
-            override fun goToGameDetails(gameId: Int) {
+        gameAdapter = GameAdapter(object : OnGameClickListener {
+            override fun onGameClick(gameId: Int) {
                 goToGameDetailsScreen(gameId)
             }
-        }, object : OnFavoriteGameClickHandler {
-            override fun addGameToFavorite(game: GameUiModel) {
+
+            override fun onFavoriteGameClick(game: GameUiModel) {
                 onFavoriteGameIconClicked(game)
             }
         })
-        genreAdapter = GenreAdapter(object : OnGenreListClickHandler {
+        genreAdapter = GenreAdapter(object : OnGenreClickListener {
             override fun goToGenreDetails(genreId: Int) {
                 naviteToGenreDetails(genreId)
             }
         })
         storeAdapter = StoreAdapter()
-        tagAdapter = TagAdapter(object : OnTagClickHandler {
+        tagAdapter = TagAdapter(object : OnTagClickListener {
             override fun onClickTag(tagId: Int) {
                 navigateToGameByTagScreen(tagId)
             }

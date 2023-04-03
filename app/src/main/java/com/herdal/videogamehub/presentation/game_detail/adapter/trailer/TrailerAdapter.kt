@@ -8,7 +8,7 @@ import com.herdal.videogamehub.databinding.ItemTrailerBinding
 import com.herdal.videogamehub.domain.ui_model.TrailerUiModel
 
 class TrailerAdapter(
-    private val onTrailerClickHandler: OnTrailerClickHandler
+    private val onTrailerClickListener: OnTrailerClickListener
 ) : BaseListAdapter<TrailerUiModel>(
     itemsSame = { old, new -> old.id == new.id },
     contentsSame = { old, new -> old == new }
@@ -23,7 +23,7 @@ class TrailerAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), onTrailerClickHandler
+            ), onTrailerClickListener
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

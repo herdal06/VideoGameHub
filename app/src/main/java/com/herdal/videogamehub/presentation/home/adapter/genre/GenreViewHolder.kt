@@ -7,7 +7,7 @@ import com.herdal.videogamehub.utils.ext.executeWithAction
 
 class GenreViewHolder(
     private val binding: ItemGenreBinding,
-    private val onGenreListClickHandler: OnGenreListClickHandler
+    private val onGenreClickListener: OnGenreClickListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(genre: GenreUiModel) = binding.apply {
         binding.executeWithAction {
@@ -16,7 +16,7 @@ class GenreViewHolder(
 
         itemView.setOnClickListener {
             genre.id.let { genreId ->
-                onGenreListClickHandler.goToGenreDetails(genreId)
+                onGenreClickListener.goToGenreDetails(genreId)
             }
         }
     }

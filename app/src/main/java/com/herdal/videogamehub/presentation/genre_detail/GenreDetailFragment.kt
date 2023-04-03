@@ -13,9 +13,8 @@ import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGenreDetailBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.ui_model.GenreUiModel
-import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
-import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListener
 import com.herdal.videogamehub.utils.ext.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -74,12 +73,12 @@ class GenreDetailFragment : Fragment() {
     }
 
     private fun setupRecyclerView() = binding.apply {
-        gamesByGenreAdapter = GameAdapter(object : OnGameListClickHandler {
-            override fun goToGameDetails(gameId: Int) {
+        gamesByGenreAdapter = GameAdapter(object : OnGameClickListener {
+            override fun onGameClick(gameId: Int) {
                 goToGameDetailsScreen(gameId)
             }
-        }, object : OnFavoriteGameClickHandler {
-            override fun addGameToFavorite(game: GameUiModel) {
+
+            override fun onFavoriteGameClick(game: GameUiModel) {
                 onFavoriteGameIconClicked(game)
             }
         })

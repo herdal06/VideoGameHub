@@ -14,7 +14,7 @@ import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGameDetailBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.game_detail.adapter.screenshot.ScreenshotAdapter
-import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.OnTrailerClickHandler
+import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.OnTrailerClickListener
 import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.TrailerAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import com.herdal.videogamehub.utils.ext.hide
@@ -80,7 +80,7 @@ class GameDetailFragment : Fragment() {
     }
 
     private fun setupRecyclerView() = binding.apply {
-        trailerAdapter = TrailerAdapter(object : OnTrailerClickHandler {
+        trailerAdapter = TrailerAdapter(object : OnTrailerClickListener {
             override fun onClickVideo(url: String?) {
                 Toast.makeText(requireContext(), "Test", Toast.LENGTH_LONG).show()
             }

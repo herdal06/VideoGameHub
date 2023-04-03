@@ -7,7 +7,7 @@ import com.herdal.videogamehub.utils.ext.executeWithAction
 
 class TrailerViewHolder(
     private val binding: ItemTrailerBinding,
-    private val onTrailerClickHandler: OnTrailerClickHandler
+    private val onTrailerClickListener: OnTrailerClickListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(trailer: TrailerUiModel) = binding.apply {
         binding.executeWithAction {
@@ -16,7 +16,7 @@ class TrailerViewHolder(
 
         itemView.setOnClickListener {
             trailer.data?.let {
-                onTrailerClickHandler.onClickVideo(it)
+                onTrailerClickListener.onClickVideo(it)
             }
         }
     }
