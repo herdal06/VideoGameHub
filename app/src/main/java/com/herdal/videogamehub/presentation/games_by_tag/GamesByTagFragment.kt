@@ -9,13 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.herdal.videogamehub.databinding.FragmentGamesByTagBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
 import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListener
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GamesByTagFragment : Fragment() {
@@ -38,13 +38,14 @@ class GamesByTagFragment : Fragment() {
     ): View {
         _binding = FragmentGamesByTagBinding.inflate(inflater, container, false)
         val view = binding.root
-        getGamesByTag(getTagIdArgs())
+        setupUiEvents()
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        viewModel.handleEvent(GamesByTagUiEvent.GetGamesByTag(getTagIdArgs()))
     }
 
     private fun setupRecyclerView() = binding.apply {
@@ -54,16 +55,32 @@ class GamesByTagFragment : Fragment() {
             }
 
             override fun onFavoriteGameClick(game: GameUiModel) {
-                onFavoriteGameIconClicked(game)
+                viewModel.handleEvent(GamesByTagUiEvent.FavoriteGameIconClicked(game))
             }
         })
         rvGamesByTag.adapter = gamesByTagAdapter
     }
 
-    private fun getGamesByTag(tagId: Int) {
-        viewModel.getGamesByTag(tagId)
-        collectLatestLifecycleFlow(viewModel.gamesByTag) { pagingData ->
-            gamesByTagAdapter.submitData(pagingData)
+    private fun setupUiEvents() {
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            handleUiState(state)
+        }
+    }
+
+    private fun handleUiState(uiState: GamesByTagUiState) {
+        binding.apply {
+            uiState.error?.let {
+                Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show()
+            }
+
+            //progressBar.visibility = if (uiState.isLoading) View.VISIBLE else View.GONE
+            uiState.games?.let { flow ->
+                viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                    flow.collect { games ->
+                        gamesByTagAdapter.submitData(games)
+                    }
+                }
+            }
         }
     }
 
@@ -71,12 +88,6 @@ class GamesByTagFragment : Fragment() {
         val action =
             GamesByTagFragmentDirections.actionGamesByTagFragmentToGameDetailFragment(gameId = gameId)
         findNavController().navigate(action)
-    }
-
-    private fun onFavoriteGameIconClicked(game: GameUiModel) {
-        lifecycleScope.launch {
-            viewModel.favoriteGameIconClicked(game)
-        }
     }
 
     override fun onDestroyView() {

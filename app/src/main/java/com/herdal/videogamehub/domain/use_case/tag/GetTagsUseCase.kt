@@ -1,15 +1,26 @@
 package com.herdal.videogamehub.domain.use_case.tag
 
-import androidx.paging.PagingData
+import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.domain.repository.TagRepository
-import com.herdal.videogamehub.domain.ui_model.TagUiModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import okio.IOException
+import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 class GetTagsUseCase @Inject constructor(
     private val tagRepository: TagRepository
 ) {
-    operator fun invoke(): Flow<PagingData<TagUiModel>> {
-        return tagRepository.getTags()
+    operator fun invoke() = flow {
+        try {
+            emit(Resource.Loading())
+            val tags = tagRepository.getTags()
+            Timber.d("$tags")
+            emit(Resource.Success(data = tags))
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.message))
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.message))
+        }
     }
 }

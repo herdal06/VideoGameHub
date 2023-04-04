@@ -16,6 +16,7 @@ import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListene
 import com.herdal.videogamehub.presentation.search.adapter.genre_without_image.GenreWithoutImageAdapter
 import com.herdal.videogamehub.presentation.search.adapter.genre_without_image.OnGenreWithoutImageClickHandler
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
+import com.herdal.videogamehub.utils.ext.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -54,7 +55,7 @@ class SearchFragment : Fragment() {
             }
 
             override fun onFavoriteGameClick(game: GameUiModel) {
-                onFavoriteGameIconClicked(game)
+                favoriteGameIconClicked(game)
             }
         })
         genreAdapter = GenreWithoutImageAdapter(object : OnGenreWithoutImageClickHandler {
@@ -66,24 +67,39 @@ class SearchFragment : Fragment() {
         rvGenreSearch.adapter = genreAdapter
     }
 
-    private fun searchGames(searchText: String) = binding.apply {
-        viewModel.searchGames(searchText)
-        collectLatestLifecycleFlow(viewModel.searchedGames) { pagingData ->
-            searchedGamesAdapter.submitData(pagingData)
+    private fun searchGames(searchText: String) {
+        viewModel.handleEvent(SearchUiEvent.SearchGames(searchText))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.searchedGames?.let { flow ->
+                binding.rvSearchedGames.show()
+                flow.collect { searchedGames ->
+                    searchedGamesAdapter.submitData(searchedGames)
+                }
+            }
         }
     }
 
-    private fun collectGenres() {
-        viewModel.getGenres()
-        collectLatestLifecycleFlow(viewModel.genres) { genres ->
-            genreAdapter.submitList(genres)
+    private fun collectGenres() = binding.apply {
+        viewModel.handleEvent(SearchUiEvent.GetGenres)
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.genres.let { flow ->
+                rvGenreSearch.show()
+                flow?.collect { genres ->
+                    genreAdapter.submitList(genres)
+                }
+            }
         }
     }
 
     private fun getGamesByGenreId(genreId: Int) {
-        viewModel.getGamesByGenre(genreId)
-        collectLatestLifecycleFlow(viewModel.gamesByGenre) { pagingData ->
-            searchedGamesAdapter.submitData(pagingData)
+        viewModel.handleEvent(SearchUiEvent.GetGamesByGenre(genreId))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.genres.let { flow ->
+                binding.rvGenreSearch.show()
+                flow?.collect { genres ->
+                    genreAdapter.submitList(genres)
+                }
+            }
         }
     }
 
@@ -107,7 +123,7 @@ class SearchFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun onFavoriteGameIconClicked(game: GameUiModel) {
+    private fun favoriteGameIconClicked(game: GameUiModel) {
         lifecycleScope.launch {
             viewModel.favoriteGameIconClicked(game)
         }

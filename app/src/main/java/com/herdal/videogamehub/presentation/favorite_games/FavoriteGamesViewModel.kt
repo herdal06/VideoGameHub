@@ -8,44 +8,74 @@ import com.herdal.videogamehub.domain.use_case.game.AddOrRemoveGameFromFavoriteU
 import com.herdal.videogamehub.domain.use_case.game.GetFavoriteGamesUseCase
 import com.herdal.videogamehub.domain.use_case.game.SearchFavoriteGamesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteGamesViewModel @Inject constructor(
-    getFavoriteGamesUseCase: GetFavoriteGamesUseCase,
+    private val getFavoriteGamesUseCase: GetFavoriteGamesUseCase,
     private val addOrRemoveGameFromFavoriteUseCase: AddOrRemoveGameFromFavoriteUseCase,
     private val searchFavoriteGamesUseCase: SearchFavoriteGamesUseCase
 ) : ViewModel() {
 
-    val favoriteGames = getFavoriteGamesUseCase.invoke()
+    private val _uiState = MutableStateFlow(FavoriteGamesUiState())
+    val uiState: StateFlow<FavoriteGamesUiState> = _uiState.asStateFlow()
 
-    private val _searchedFavGames =
-        MutableStateFlow<Resource<List<GameUiModel>>>(Resource.Loading())
-    val searchedFavGames = _searchedFavGames.asStateFlow()
+    fun handleEvent(event: FavoriteGamesUiEvent) {
+        when (event) {
+            is FavoriteGamesUiEvent.FavoriteIconClicked -> favoriteIconClicked(event.game)
+            is FavoriteGamesUiEvent.SearchQueryChanged -> searchFavGames(event.searchQuery)
+            is FavoriteGamesUiEvent.GetFavoriteGames -> getFavoriteGames()
+        }
+    }
 
-    fun searchFavGames(searchQuery: String) {
+    private fun getFavoriteGames() = viewModelScope.launch {
+        getFavoriteGamesUseCase.invoke().collect { resource ->
+            when (resource) {
+                is Resource.Error -> {
+                    _uiState.update { state ->
+                        state.copy(error = resource.message)
+                    }
+                }
+                is Resource.Loading -> {
+                    _uiState.update { state ->
+                        state.copy(isLoading = true)
+                    }
+                }
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(favoriteGames = resource.data)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun searchFavGames(searchQuery: String) = viewModelScope.launch {
         searchFavoriteGamesUseCase(searchQuery = searchQuery)
             .onEach { resource ->
                 when (resource) {
                     is Resource.Loading -> {
-                        _searchedFavGames.value = Resource.Loading()
+                        _uiState.update { state ->
+                            state.copy(isLoading = true)
+                        }
                     }
                     is Resource.Success -> {
-                        _searchedFavGames.value = resource.data?.let { Resource.Success(it) }!!
+                        _uiState.update { state ->
+                            state.copy(searchedGames = resource.data)
+                        }
                     }
                     is Resource.Error -> {
-                        _searchedFavGames.value = Resource.Error(resource.message)
+                        _uiState.update { state ->
+                            state.copy(error = resource.message)
+                        }
                     }
                 }
-            }.launchIn(viewModelScope)
+            }
     }
 
-    fun favoriteIconClicked(game: GameUiModel) {
+    private fun favoriteIconClicked(game: GameUiModel) {
         viewModelScope.launch {
             addOrRemoveGameFromFavoriteUseCase.invoke(game)
         }

@@ -10,15 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.herdal.videogamehub.R
-import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGameDetailBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.game_detail.adapter.screenshot.ScreenshotAdapter
 import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.OnTrailerClickListener
 import com.herdal.videogamehub.presentation.game_detail.adapter.trailer.TrailerAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
-import com.herdal.videogamehub.utils.ext.hide
-import com.herdal.videogamehub.utils.ext.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,9 +40,7 @@ class GameDetailFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_game_detail, container, false)
         val view = binding.root
-        collectGameDetails(getGameId())
-        collectScreenshots(getGameId())
-        collectTrailers(getGameId())
+        collectData(getGameId())
         return view
     }
 
@@ -55,22 +50,10 @@ class GameDetailFragment : Fragment() {
     }
 
     private fun collectGameDetails(gameId: Int) = binding.apply {
-        viewModel.getGameById(gameId)
-        collectLatestLifecycleFlow(viewModel.gameDetail) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    pbGameDetail.show()
-                    tvGameDetailError.hide()
-                }
-                is Resource.Success -> {
-                    pbGameDetail.hide()
-                    tvGameDetailError.hide()
-                    resource.data?.let { setupUI(it) }
-                }
-                is Resource.Error -> {
-                    pbGameDetail.hide()
-                    tvGameDetailError.show()
-                }
+        viewModel.handleEvent(GameDetailUiEvent.GetGameById(gameId))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.gameDetail?.let {
+                setupUI(it)
             }
         }
     }
@@ -89,27 +72,28 @@ class GameDetailFragment : Fragment() {
         rvTrailers.adapter = trailerAdapter
     }
 
+    private fun collectData(gameId:Int) {
+        collectGameDetails(gameId)
+        collectScreenshots(gameId)
+        collectTrailers(gameId)
+    }
+
     private fun collectScreenshots(gameId: Int) {
-        viewModel.getScreenshots(gameId = gameId)
-        collectLatestLifecycleFlow(viewModel.screenshots) {
-            screenshotAdapter.submitList(it)
+        viewModel.handleEvent(GameDetailUiEvent.GetScreenshots(gameId))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.screenshots?.let { flow ->
+                flow.collect {
+                    screenshotAdapter.submitList(it)
+                }
+            }
         }
     }
 
     private fun collectTrailers(gameId: Int) {
-        viewModel.getTrailers(gameId = gameId)
-        collectLatestLifecycleFlow(viewModel.trailers) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-
-                }
-                is Resource.Success -> {
-
-                    trailerAdapter.submitList(resource.data)
-                }
-                is Resource.Error -> {
-
-                }
+        viewModel.handleEvent(GameDetailUiEvent.GetTrailers(gameId))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.trailers?.let {
+                trailerAdapter.submitList(it)
             }
         }
     }
