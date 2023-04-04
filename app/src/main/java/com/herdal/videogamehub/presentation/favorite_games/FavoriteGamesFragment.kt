@@ -64,6 +64,17 @@ class FavoriteGamesFragment : Fragment() {
         }
     }
 
+    private fun collectFavoriteGames() {
+        viewModel.handleEvent(FavoriteGamesUiEvent.GetFavoriteGames)
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.favoriteGames.let { flow ->
+                flow?.collect {
+                    favoriteGameAdapter.submitList(it)
+                }
+            }
+        }
+    }
+
     private fun setupSearchView() = binding.svFavoriteGames.setOnQueryTextListener(object :
         SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
@@ -74,6 +85,9 @@ class FavoriteGamesFragment : Fragment() {
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
+            if (newText.isNullOrBlank()) {
+                collectFavoriteGames()
+            }
             return false
         }
     })
@@ -86,17 +100,6 @@ class FavoriteGamesFragment : Fragment() {
         val action =
             FavoriteGamesFragmentDirections.actionFavoriteGamesFragmentToGameDetailFragment(gameId = gameId)
         findNavController().navigate(action)
-    }
-
-    private fun collectFavoriteGames() {
-        viewModel.handleEvent(FavoriteGamesUiEvent.GetFavoriteGames)
-        collectLatestLifecycleFlow(viewModel.uiState) { state ->
-            state.favoriteGames.let { flow ->
-                flow?.collect {
-                    favoriteGameAdapter.submitList(it)
-                }
-            }
-        }
     }
 
     override fun onDestroyView() {

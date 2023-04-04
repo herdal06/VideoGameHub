@@ -94,10 +94,10 @@ class SearchFragment : Fragment() {
     private fun getGamesByGenreId(genreId: Int) {
         viewModel.handleEvent(SearchUiEvent.GetGamesByGenre(genreId))
         collectLatestLifecycleFlow(viewModel.uiState) { state ->
-            state.genres.let { flow ->
+            state.gamesByGenre.let { flow ->
                 binding.rvGenreSearch.show()
-                flow?.collect { genres ->
-                    genreAdapter.submitList(genres)
+                flow?.collect { games ->
+                    searchedGamesAdapter.submitData(games)
                 }
             }
         }

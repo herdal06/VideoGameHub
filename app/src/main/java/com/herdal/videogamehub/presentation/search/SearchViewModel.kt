@@ -29,18 +29,11 @@ class SearchViewModel @Inject constructor(
 
     fun handleEvent(uiEvent: SearchUiEvent) {
         when (uiEvent) {
-            is SearchUiEvent.SearchGames -> {
-                searchGames(uiEvent.searchQuery)
-            }
-            is SearchUiEvent.FavoriteGameIconClicked -> {
-                favoriteGameIconClicked(uiEvent.game)
-            }
-            is SearchUiEvent.GetGamesByGenre -> {
-                getGamesByGenre(uiEvent.genreId)
-            }
-            SearchUiEvent.GetGenres -> {
-                getGenres()
-            }
+            is SearchUiEvent.SearchGames -> searchGames(uiEvent.searchQuery)
+            is SearchUiEvent.FavoriteGameIconClicked -> favoriteGameIconClicked(uiEvent.game)
+            is SearchUiEvent.GetGamesByGenre -> getGamesByGenre(uiEvent.genreId)
+            is SearchUiEvent.GetGenres -> getGenres()
+
         }
     }
 
@@ -100,7 +93,7 @@ class SearchViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Success -> {
                         _uiState.update { state ->
-                            state.copy(gamesByGenre = resource.data)
+                            state.copy(searchedGames = resource.data)
                         }
                     }
                     is Resource.Error -> {

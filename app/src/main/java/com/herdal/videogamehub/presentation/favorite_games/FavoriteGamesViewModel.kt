@@ -53,26 +53,25 @@ class FavoriteGamesViewModel @Inject constructor(
     }
 
     private fun searchFavGames(searchQuery: String) = viewModelScope.launch {
-        searchFavoriteGamesUseCase(searchQuery = searchQuery)
-            .onEach { resource ->
-                when (resource) {
-                    is Resource.Loading -> {
-                        _uiState.update { state ->
-                            state.copy(isLoading = true)
-                        }
+        searchFavoriteGamesUseCase(searchQuery = searchQuery).collect { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    _uiState.update { state ->
+                        state.copy(isLoading = true)
                     }
-                    is Resource.Success -> {
-                        _uiState.update { state ->
-                            state.copy(searchedGames = resource.data)
-                        }
+                }
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(searchedGames = resource.data)
                     }
-                    is Resource.Error -> {
-                        _uiState.update { state ->
-                            state.copy(error = resource.message)
-                        }
+                }
+                is Resource.Error -> {
+                    _uiState.update { state ->
+                        state.copy(error = resource.message)
                     }
                 }
             }
+        }
     }
 
     private fun favoriteIconClicked(game: GameUiModel) {
