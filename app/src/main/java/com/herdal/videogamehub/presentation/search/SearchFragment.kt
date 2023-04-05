@@ -11,12 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentSearchBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
-import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListener
 import com.herdal.videogamehub.presentation.search.adapter.genre_without_image.GenreWithoutImageAdapter
 import com.herdal.videogamehub.presentation.search.adapter.genre_without_image.OnGenreWithoutImageClickHandler
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
+import com.herdal.videogamehub.utils.ext.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,13 +49,13 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupRecyclerView() = binding.apply {
-        searchedGamesAdapter = GameAdapter(object : OnGameListClickHandler {
-            override fun goToGameDetails(gameId: Int) {
+        searchedGamesAdapter = GameAdapter(object : OnGameClickListener {
+            override fun onGameClick(gameId: Int) {
                 goToGameDetailsScreen(gameId)
             }
-        }, object : OnFavoriteGameClickHandler {
-            override fun addGameToFavorite(game: GameUiModel) {
-                onFavoriteGameIconClicked(game)
+
+            override fun onFavoriteGameClick(game: GameUiModel) {
+                favoriteGameIconClicked(game)
             }
         })
         genreAdapter = GenreWithoutImageAdapter(object : OnGenreWithoutImageClickHandler {
@@ -67,24 +67,39 @@ class SearchFragment : Fragment() {
         rvGenreSearch.adapter = genreAdapter
     }
 
-    private fun searchGames(searchText: String) = binding.apply {
-        viewModel.searchGames(searchText)
-        collectLatestLifecycleFlow(viewModel.searchedGames) { pagingData ->
-            searchedGamesAdapter.submitData(pagingData)
+    private fun searchGames(searchText: String) {
+        viewModel.handleEvent(SearchUiEvent.SearchGames(searchText))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.searchedGames?.let { flow ->
+                binding.rvSearchedGames.show()
+                flow.collect { searchedGames ->
+                    searchedGamesAdapter.submitData(searchedGames)
+                }
+            }
         }
     }
 
-    private fun collectGenres() {
-        viewModel.getGenres()
-        collectLatestLifecycleFlow(viewModel.genres) { genres ->
-            genreAdapter.submitList(genres)
+    private fun collectGenres() = binding.apply {
+        viewModel.handleEvent(SearchUiEvent.GetGenres)
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.genres.let { flow ->
+                rvGenreSearch.show()
+                flow?.collect { genres ->
+                    genreAdapter.submitList(genres)
+                }
+            }
         }
     }
 
     private fun getGamesByGenreId(genreId: Int) {
-        viewModel.getGamesByGenre(genreId)
-        collectLatestLifecycleFlow(viewModel.gamesByGenre) { pagingData ->
-            searchedGamesAdapter.submitData(pagingData)
+        viewModel.handleEvent(SearchUiEvent.GetGamesByGenre(genreId))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.gamesByGenre.let { flow ->
+                binding.rvGenreSearch.show()
+                flow?.collect { games ->
+                    searchedGamesAdapter.submitData(games)
+                }
+            }
         }
     }
 
@@ -108,7 +123,7 @@ class SearchFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun onFavoriteGameIconClicked(game: GameUiModel) {
+    private fun favoriteGameIconClicked(game: GameUiModel) {
         lifecycleScope.launch {
             viewModel.favoriteGameIconClicked(game)
         }

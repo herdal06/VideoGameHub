@@ -10,15 +10,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.herdal.videogamehub.databinding.FragmentHomeBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
-import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListener
 import com.herdal.videogamehub.presentation.home.adapter.genre.GenreAdapter
-import com.herdal.videogamehub.presentation.home.adapter.genre.OnGenreListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.genre.OnGenreClickListener
 import com.herdal.videogamehub.presentation.home.adapter.store.StoreAdapter
-import com.herdal.videogamehub.presentation.home.adapter.tag.OnTagClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.tag.OnTagClickListener
 import com.herdal.videogamehub.presentation.home.adapter.tag.TagAdapter
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
+import com.herdal.videogamehub.utils.ext.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -41,54 +41,87 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view = binding.root
-        collectFlows()
-        return view
-    }
-
-    private fun collectFlows() {
-        // collect stores
-        collectLatestLifecycleFlow(viewModel.stores) { stores ->
-            storeAdapter.submitList(stores)
-        }
-        // collect genres
-        collectLatestLifecycleFlow(viewModel.genres) { genres ->
-            genreAdapter.submitList(genres)
-        }
-        // collect games
-        viewModel.getGames()
-        collectLatestLifecycleFlow(viewModel.games) { gamePagingData ->
-            gameAdapter.submitData(gamePagingData)
-        }
-        // collect tags
-        viewModel.getTags()
-        collectLatestLifecycleFlow(viewModel.tags) { tagPagingData ->
-            tagAdapter.submitData(tagPagingData)
-        }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerViews()
+        collectData()
+    }
+
+    private fun collectGames() = binding.apply {
+        viewModel.handleEvent(HomeUiEvent.GetGames)
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.games.let { flow ->
+                rvGames.show()
+                flow?.collect { games ->
+                    gameAdapter.submitData(games)
+                }
+            }
+        }
+    }
+
+    private fun collectTags() = binding.apply {
+        viewModel.handleEvent(HomeUiEvent.GetTags)
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.tags.let { flow ->
+                rvTags.show()
+                flow?.collect { tags ->
+                    tagAdapter.submitData(tags)
+                }
+            }
+        }
+    }
+
+    private fun collectStores() = binding.apply {
+        viewModel.handleEvent(HomeUiEvent.GetStores)
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.stores.let { flow ->
+                rvStores.show()
+                flow?.collect { stores ->
+                    storeAdapter.submitList(stores)
+                }
+            }
+        }
+    }
+
+    private fun collectGenres() = binding.apply {
+        viewModel.handleEvent(HomeUiEvent.GetGenres)
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.genres.let { flow ->
+                rvGenres.show()
+                flow?.collect { genres ->
+                    genreAdapter.submitList(genres)
+                }
+            }
+        }
+    }
+
+    private fun collectData() {
+        collectGames()
+        collectTags()
+        collectStores()
+        collectGenres()
     }
 
     private fun initRecyclerViews() {
-        gameAdapter = GameAdapter(object : OnGameListClickHandler {
-            override fun goToGameDetails(gameId: Int) {
+        gameAdapter = GameAdapter(object : OnGameClickListener {
+            override fun onGameClick(gameId: Int) {
                 goToGameDetailsScreen(gameId)
             }
-        }, object : OnFavoriteGameClickHandler {
-            override fun addGameToFavorite(game: GameUiModel) {
+
+            override fun onFavoriteGameClick(game: GameUiModel) {
                 onFavoriteGameIconClicked(game)
             }
         })
-        genreAdapter = GenreAdapter(object : OnGenreListClickHandler {
+        genreAdapter = GenreAdapter(object : OnGenreClickListener {
             override fun goToGenreDetails(genreId: Int) {
                 naviteToGenreDetails(genreId)
             }
         })
         storeAdapter = StoreAdapter()
-        tagAdapter = TagAdapter(object : OnTagClickHandler {
+        tagAdapter = TagAdapter(object : OnTagClickListener {
             override fun onClickTag(tagId: Int) {
                 navigateToGameByTagScreen(tagId)
             }
@@ -122,7 +155,7 @@ class HomeFragment : Fragment() {
 
     private fun onFavoriteGameIconClicked(game: GameUiModel) {
         lifecycleScope.launch {
-            viewModel.favoriteGameIconClicked(game)
+            viewModel.handleEvent(HomeUiEvent.FavoriteGameIconClicked(game))
         }
     }
 

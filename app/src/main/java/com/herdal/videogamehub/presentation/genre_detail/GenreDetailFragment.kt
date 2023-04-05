@@ -9,13 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentGenreDetailBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.ui_model.GenreUiModel
-import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
 import com.herdal.videogamehub.presentation.home.adapter.game.GameAdapter
-import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListener
 import com.herdal.videogamehub.utils.ext.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -41,7 +39,7 @@ class GenreDetailFragment : Fragment() {
     ): View {
         _binding = FragmentGenreDetailBinding.inflate(inflater, container, false)
         val view = binding.root
-        collectGenreDetails(getGenreIdArgs())
+        collectGenre(getGenreIdArgs())
         getGamesByGenre(getGenreIdArgs())
         return view
     }
@@ -52,34 +50,24 @@ class GenreDetailFragment : Fragment() {
         addTransitionToDescriptionText()
     }
 
-    private fun collectGenreDetails(genreId: Int) = binding.apply {
-        viewModel.getGenreDetails(genreId)
-        collectLatestLifecycleFlow(viewModel.genre) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    pbGenreDetails.show()
-                    tvGenreDetailError.hide()
-                }
-                is Resource.Success -> {
-                    pbGenreDetails.hide()
-                    tvGenreDetailError.hide()
-                    setupUI(resource.data)
-                }
-                is Resource.Error -> {
-                    pbGenreDetails.hide()
-                    tvGenreDetailError.show()
-                }
+    private fun collectGenre(genreId: Int) = binding.apply {
+        viewModel.handleEvent(GenreDetailUiEvent.GetGenreDetails(genreId))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.genre?.let { genre ->
+                pbGenreDetails.hide()
+                tvGenreDetailError.hide()
+                setupUI(genre)
             }
         }
     }
 
     private fun setupRecyclerView() = binding.apply {
-        gamesByGenreAdapter = GameAdapter(object : OnGameListClickHandler {
-            override fun goToGameDetails(gameId: Int) {
+        gamesByGenreAdapter = GameAdapter(object : OnGameClickListener {
+            override fun onGameClick(gameId: Int) {
                 goToGameDetailsScreen(gameId)
             }
-        }, object : OnFavoriteGameClickHandler {
-            override fun addGameToFavorite(game: GameUiModel) {
+
+            override fun onFavoriteGameClick(game: GameUiModel) {
                 onFavoriteGameIconClicked(game)
             }
         })
@@ -87,15 +75,19 @@ class GenreDetailFragment : Fragment() {
     }
 
     private fun getGamesByGenre(genreId: Int) = binding.apply {
-        viewModel.getGamesByGenre(genreId)
-        collectLatestLifecycleFlow(viewModel.gamesByGenre) { pagingData ->
-            gamesByGenreAdapter.submitData(pagingData)
+        viewModel.handleEvent(GenreDetailUiEvent.GetGamesByGenre(genreId))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.games?.let { flow ->
+                flow.collect {
+                    gamesByGenreAdapter.submitData(it)
+                }
+            }
         }
     }
 
     private fun onFavoriteGameIconClicked(game: GameUiModel) {
         lifecycleScope.launch {
-            viewModel.favoriteGameIconClicked(game)
+            viewModel.handleEvent(GenreDetailUiEvent.FavoriteGameIconClicked(game))
         }
     }
 

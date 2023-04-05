@@ -8,15 +8,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.herdal.videogamehub.common.Resource
 import com.herdal.videogamehub.databinding.FragmentFavoriteGamesBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.presentation.favorite_games.adapter.FavoriteGameAdapter
-import com.herdal.videogamehub.presentation.favorite_games.adapter.OnFavoriteGameClickHandler
-import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListener
 import com.herdal.videogamehub.utils.ext.collectLatestLifecycleFlow
-import com.herdal.videogamehub.utils.ext.hide
-import com.herdal.videogamehub.utils.ext.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,12 +43,12 @@ class FavoriteGamesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() = binding.apply {
-        favoriteGameAdapter = FavoriteGameAdapter(object : OnGameListClickHandler {
-            override fun goToGameDetails(gameId: Int) {
+        favoriteGameAdapter = FavoriteGameAdapter(object : OnGameClickListener {
+            override fun onGameClick(gameId: Int) {
                 goToGameDetailsScreen(gameId)
             }
-        }, object : OnFavoriteGameClickHandler {
-            override fun addGameToFavorite(game: GameUiModel) {
+
+            override fun onFavoriteGameClick(game: GameUiModel) {
                 onFavoriteGameIconClicked(game)
             }
         })
@@ -60,24 +56,20 @@ class FavoriteGamesFragment : Fragment() {
     }
 
     private fun searchFavGames(searchQuery: String) = binding.apply {
-        viewModel.searchFavGames(searchQuery)
-        collectLatestLifecycleFlow(viewModel.searchedFavGames) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    pbFavoriteGames.show()
-                    tvFavoriteGamesError.hide()
-                    rvFavoriteGames.hide()
-                }
-                is Resource.Success -> {
-                    pbFavoriteGames.hide()
-                    tvFavoriteGamesError.hide()
-                    favoriteGameAdapter.submitList(resource.data)
-                    rvFavoriteGames.show()
-                }
-                is Resource.Error -> {
-                    pbFavoriteGames.hide()
-                    tvFavoriteGamesError.show()
-                    rvFavoriteGames.hide()
+        viewModel.handleEvent(FavoriteGamesUiEvent.SearchQueryChanged(searchQuery))
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.searchedGames?.let {
+                favoriteGameAdapter.submitList(it)
+            }
+        }
+    }
+
+    private fun collectFavoriteGames() {
+        viewModel.handleEvent(FavoriteGamesUiEvent.GetFavoriteGames)
+        collectLatestLifecycleFlow(viewModel.uiState) { state ->
+            state.favoriteGames.let { flow ->
+                flow?.collect {
+                    favoriteGameAdapter.submitList(it)
                 }
             }
         }
@@ -93,24 +85,21 @@ class FavoriteGamesFragment : Fragment() {
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
+            if (newText.isNullOrBlank()) {
+                collectFavoriteGames()
+            }
             return false
         }
     })
 
     private fun onFavoriteGameIconClicked(game: GameUiModel) {
-        viewModel.favoriteIconClicked(game)
+        viewModel.handleEvent(FavoriteGamesUiEvent.FavoriteIconClicked(game))
     }
 
     private fun goToGameDetailsScreen(gameId: Int) {
         val action =
             FavoriteGamesFragmentDirections.actionFavoriteGamesFragmentToGameDetailFragment(gameId = gameId)
         findNavController().navigate(action)
-    }
-
-    private fun collectFavoriteGames() {
-        collectLatestLifecycleFlow(viewModel.favoriteGames) { result ->
-            favoriteGameAdapter.submitList(result)
-        }
     }
 
     override fun onDestroyView() {
