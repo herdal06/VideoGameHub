@@ -7,7 +7,6 @@ import com.herdal.videogamehub.domain.use_case.game.GetGameDetailsUseCase
 import com.herdal.videogamehub.domain.use_case.game_screenshots.GetScreenshotsUseCase
 import com.herdal.videogamehub.domain.use_case.trailer.GetGameTrailersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -53,7 +52,7 @@ class GameDetailViewModel @Inject constructor(
     }
 
     fun getTrailers(gameId: Int) = viewModelScope.launch {
-        getGameTrailersUseCase(gameId).onEach { resource ->
+        getGameTrailersUseCase(gameId).collect { resource ->
             updateUiState { state ->
                 when (resource) {
                     is Resource.Error -> state.copy(error = resource.message)
