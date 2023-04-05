@@ -7,7 +7,7 @@ import com.herdal.videogamehub.utils.ext.executeWithAction
 
 class TagViewHolder(
     private val binding: ItemTagBinding,
-    private val onClickTagClickHandler: OnTagClickHandler
+    private val onClickTagClickHandler: OnTagClickListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(tag: TagUiModel) = binding.apply {
         binding.executeWithAction {

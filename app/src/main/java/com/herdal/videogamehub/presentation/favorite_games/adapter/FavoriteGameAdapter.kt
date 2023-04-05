@@ -6,11 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.herdal.videogamehub.common.base.BaseListAdapter
 import com.herdal.videogamehub.databinding.ItemFavoriteGameBinding
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.presentation.home.adapter.game.OnGameListClickHandler
+import com.herdal.videogamehub.presentation.home.adapter.game.OnGameClickListener
 
 class FavoriteGameAdapter(
-    private val onGameListClickHandler: OnGameListClickHandler,
-    private val onFavoriteGameClickHandler: OnFavoriteGameClickHandler
+    private val onGameClickListener: OnGameClickListener,
 ) : BaseListAdapter<GameUiModel>(
     itemsSame = { old, new -> old.id == new.id },
     contentsSame = { old, new -> old == new }
@@ -25,7 +24,7 @@ class FavoriteGameAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), onGameListClickHandler, onFavoriteGameClickHandler
+            ), onGameClickListener
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

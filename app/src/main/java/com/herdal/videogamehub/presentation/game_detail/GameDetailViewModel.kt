@@ -1,16 +1,13 @@
 package com.herdal.videogamehub.presentation.game_detail
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.herdal.videogamehub.common.Resource
-import com.herdal.videogamehub.domain.ui_model.GameUiModel
-import com.herdal.videogamehub.domain.ui_model.ScreenshotUiModel
-import com.herdal.videogamehub.domain.ui_model.TrailerUiModel
-import com.herdal.videogamehub.domain.use_case.trailer.GetGameTrailersUseCase
+import com.herdal.videogamehub.common.base.BaseViewModel
 import com.herdal.videogamehub.domain.use_case.game.GetGameDetailsUseCase
 import com.herdal.videogamehub.domain.use_case.game_screenshots.GetScreenshotsUseCase
+import com.herdal.videogamehub.domain.use_case.trailer.GetGameTrailersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,59 +16,51 @@ class GameDetailViewModel @Inject constructor(
     private val getGameDetailsUseCase: GetGameDetailsUseCase,
     private val getScreenshotsUseCase: GetScreenshotsUseCase,
     private val getGameTrailersUseCase: GetGameTrailersUseCase
-) : ViewModel() {
-    private val _gameDetail =
-        MutableStateFlow<Resource<GameUiModel>>(Resource.Loading())
-    val gameDetail = _gameDetail.asStateFlow()
+) : BaseViewModel<GameDetailUiState>() {
 
-    private val _screenshots =
-        MutableStateFlow<List<ScreenshotUiModel>>(emptyList())
-    val screenshots = _screenshots.asStateFlow()
+    override fun getInitialUiState(): GameDetailUiState = GameDetailUiState()
 
-    private val _trailers =
-        MutableStateFlow<Resource<List<TrailerUiModel>?>>(Resource.Loading())
-    val trailers = _trailers.asStateFlow()
-
-    fun getGameById(id: Int) {
-        getGameDetailsUseCase.invoke(id)
-            .onEach { resource ->
-                when (resource) {
-                    is Resource.Loading -> {
-                        _gameDetail.value = Resource.Loading()
-                    }
-                    is Resource.Success -> {
-                        if (resource.data != null) {
-                            _gameDetail.value = Resource.Success(resource.data)
-                        }
-                    }
-                    is Resource.Error -> {
-                        _gameDetail.value = Resource.Error(resource.message)
-                    }
-                }
-            }.launchIn(viewModelScope)
+    fun handleEvent(event: GameDetailUiEvent) {
+        when (event) {
+            is GameDetailUiEvent.GetGameById -> getGameById(event.id)
+            is GameDetailUiEvent.GetScreenshots -> getScreenshots(event.gameId)
+            is GameDetailUiEvent.GetTrailers -> getTrailers(event.gameId)
+        }
     }
 
-    fun getScreenshots(gameId: Int) {
-        getScreenshotsUseCase(gameId).onEach {
-            it?.let { _screenshots.emit(it) }
-        }.launchIn(viewModelScope)
+    fun getGameById(id: Int) = viewModelScope.launch {
+        getGameDetailsUseCase.invoke(id).collect { resource ->
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(gameDetail = resource.data)
+                }
+            }
+        }
+    }
+
+    fun getScreenshots(gameId: Int) = viewModelScope.launch {
+        getScreenshotsUseCase.invoke(gameId).collect { resource ->
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(screenshots = resource.data)
+                }
+            }
+        }
     }
 
     fun getTrailers(gameId: Int) = viewModelScope.launch {
         getGameTrailersUseCase(gameId).onEach { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _trailers.value = Resource.Loading()
-                }
-                is Resource.Success -> {
-                    if (resource.data != null) {
-                        _trailers.value = Resource.Success(resource.data)
-                    }
-                }
-                is Resource.Error -> {
-                    _trailers.value = Resource.Error(resource.message)
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(trailers = resource.data)
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 }

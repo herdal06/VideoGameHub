@@ -8,7 +8,7 @@ import com.herdal.videogamehub.databinding.ItemGenreBinding
 import com.herdal.videogamehub.domain.ui_model.GenreUiModel
 
 class GenreAdapter(
-    private val onGenreListClickHandler: OnGenreListClickHandler
+    private val onGenreClickListener: OnGenreClickListener
 ) : BaseListAdapter<GenreUiModel>(
     itemsSame = { old, new -> old.id == new.id },
     contentsSame = { old, new -> old == new }
@@ -23,7 +23,7 @@ class GenreAdapter(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), onGenreListClickHandler
+            ), onGenreClickListener
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

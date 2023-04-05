@@ -1,16 +1,12 @@
 package com.herdal.videogamehub.presentation.games_by_tag
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
+import com.herdal.videogamehub.common.Resource
+import com.herdal.videogamehub.common.base.BaseViewModel
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.use_case.game.AddOrRemoveGameFromFavoriteUseCase
 import com.herdal.videogamehub.domain.use_case.game.GetGamesByTagUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,22 +14,30 @@ import javax.inject.Inject
 class GamesByTagViewModel @Inject constructor(
     private val getGamesByTagUseCase: GetGamesByTagUseCase,
     private val addOrRemoveGameFromFavoriteUseCase: AddOrRemoveGameFromFavoriteUseCase,
-) : ViewModel() {
+) : BaseViewModel<GamesByTagUiState>() {
 
-    private val _gamesByTag =
-        MutableStateFlow<PagingData<GameUiModel>>(PagingData.empty())
-    val gamesByTag = _gamesByTag.asStateFlow()
+    override fun getInitialUiState(): GamesByTagUiState = GamesByTagUiState()
 
-    fun getGamesByTag(tagId: Int) {
-        getGamesByTagUseCase(tagId = tagId)
-            .onEach { pagingData ->
-                _gamesByTag.value = pagingData
-            }.launchIn(viewModelScope)
+    fun handleEvent(uiEvent: GamesByTagUiEvent) {
+        when (uiEvent) {
+            is GamesByTagUiEvent.GetGamesByTag -> getGamesByTag(uiEvent.tagId)
+            is GamesByTagUiEvent.FavoriteGameIconClicked -> favoriteGameIconClicked(uiEvent.game)
+        }
     }
 
-    fun favoriteGameIconClicked(game: GameUiModel) {
-        viewModelScope.launch {
-            addOrRemoveGameFromFavoriteUseCase.invoke(game)
+    private fun getGamesByTag(tagId: Int) = viewModelScope.launch {
+        getGamesByTagUseCase.invoke(tagId).collect { resource ->
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(games = resource.data)
+                }
+            }
         }
+    }
+
+    fun favoriteGameIconClicked(game: GameUiModel) = viewModelScope.launch {
+        addOrRemoveGameFromFavoriteUseCase.invoke(game)
     }
 }
