@@ -1,14 +1,13 @@
 package com.herdal.videogamehub.presentation.genre_detail
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.herdal.videogamehub.common.Resource
+import com.herdal.videogamehub.common.base.BaseViewModel
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.use_case.game.AddOrRemoveGameFromFavoriteUseCase
 import com.herdal.videogamehub.domain.use_case.game.GetGamesByGenreUseCase
 import com.herdal.videogamehub.domain.use_case.genre.GetGenreDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,10 +16,9 @@ class GenreDetailViewModel @Inject constructor(
     private val getGenreDetailsUseCase: GetGenreDetailsUseCase,
     private val getGamesByGenreUseCase: GetGamesByGenreUseCase,
     private val addOrRemoveGameFromFavoriteUseCase: AddOrRemoveGameFromFavoriteUseCase
-) : ViewModel() {
+) : BaseViewModel<GenreDetailUiState>() {
 
-    private val _uiState = MutableStateFlow(GenreDetailUiState())
-    val uiState: StateFlow<GenreDetailUiState> = _uiState.asStateFlow()
+    override fun getInitialUiState(): GenreDetailUiState = GenreDetailUiState()
 
     fun handleEvent(event: GenreDetailUiEvent) {
         when (event) {
@@ -30,55 +28,31 @@ class GenreDetailViewModel @Inject constructor(
         }
     }
 
-    fun getGenreDetails(genreId: Int) {
-        getGenreDetailsUseCase.invoke(genreId = genreId)
-            .onEach { resource ->
+    fun getGenreDetails(genreId: Int) = viewModelScope.launch {
+        getGenreDetailsUseCase.invoke(genreId = genreId).collect { resource ->
+            updateUiState { state ->
                 when (resource) {
-                    is Resource.Loading -> {
-                        _uiState.update { state ->
-                            state.copy(isLoading = true)
-                        }
-                    }
-                    is Resource.Success -> {
-                        _uiState.update { state ->
-                            state.copy(genre = resource.data)
-                        }
-                    }
-                    is Resource.Error -> {
-                        _uiState.update { state ->
-                            state.copy(error = resource.message)
-                        }
-                    }
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(genre = resource.data)
                 }
-            }.launchIn(viewModelScope)
-    }
-
-    fun getGamesByGenre(genreId: Int) {
-        getGamesByGenreUseCase.invoke(genreId = genreId)
-            .onEach { resource ->
-                when (resource) {
-                    is Resource.Loading -> {
-                        _uiState.update { state ->
-                            state.copy(isLoading = true)
-                        }
-                    }
-                    is Resource.Success -> {
-                        _uiState.update { state ->
-                            state.copy(games = resource.data)
-                        }
-                    }
-                    is Resource.Error -> {
-                        _uiState.update { state ->
-                            state.copy(error = resource.message)
-                        }
-                    }
-                }
-            }.launchIn(viewModelScope)
-    }
-
-    fun favoriteGameIconClicked(game: GameUiModel) {
-        viewModelScope.launch {
-            addOrRemoveGameFromFavoriteUseCase.invoke(game)
+            }
         }
+    }
+
+    fun getGamesByGenre(genreId: Int) = viewModelScope.launch {
+        getGamesByGenreUseCase.invoke(genreId = genreId).collect { resource ->
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(games = resource.data)
+                }
+            }
+        }
+    }
+
+    fun favoriteGameIconClicked(game: GameUiModel) = viewModelScope.launch {
+        addOrRemoveGameFromFavoriteUseCase.invoke(game)
     }
 }

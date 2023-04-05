@@ -1,14 +1,13 @@
 package com.herdal.videogamehub.presentation.favorite_games
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.herdal.videogamehub.common.Resource
+import com.herdal.videogamehub.common.base.BaseViewModel
 import com.herdal.videogamehub.domain.ui_model.GameUiModel
 import com.herdal.videogamehub.domain.use_case.game.AddOrRemoveGameFromFavoriteUseCase
 import com.herdal.videogamehub.domain.use_case.game.GetFavoriteGamesUseCase
 import com.herdal.videogamehub.domain.use_case.game.SearchFavoriteGamesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,10 +16,9 @@ class FavoriteGamesViewModel @Inject constructor(
     private val getFavoriteGamesUseCase: GetFavoriteGamesUseCase,
     private val addOrRemoveGameFromFavoriteUseCase: AddOrRemoveGameFromFavoriteUseCase,
     private val searchFavoriteGamesUseCase: SearchFavoriteGamesUseCase
-) : ViewModel() {
+) : BaseViewModel<FavoriteGamesUiState>() {
 
-    private val _uiState = MutableStateFlow(FavoriteGamesUiState())
-    val uiState: StateFlow<FavoriteGamesUiState> = _uiState.asStateFlow()
+    override fun getInitialUiState(): FavoriteGamesUiState = FavoriteGamesUiState()
 
     fun handleEvent(event: FavoriteGamesUiEvent) {
         when (event) {
@@ -32,21 +30,11 @@ class FavoriteGamesViewModel @Inject constructor(
 
     private fun getFavoriteGames() = viewModelScope.launch {
         getFavoriteGamesUseCase.invoke().collect { resource ->
-            when (resource) {
-                is Resource.Error -> {
-                    _uiState.update { state ->
-                        state.copy(error = resource.message)
-                    }
-                }
-                is Resource.Loading -> {
-                    _uiState.update { state ->
-                        state.copy(isLoading = true)
-                    }
-                }
-                is Resource.Success -> {
-                    _uiState.update { state ->
-                        state.copy(favoriteGames = resource.data)
-                    }
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(favoriteGames = resource.data)
                 }
             }
         }
@@ -54,29 +42,17 @@ class FavoriteGamesViewModel @Inject constructor(
 
     private fun searchFavGames(searchQuery: String) = viewModelScope.launch {
         searchFavoriteGamesUseCase(searchQuery = searchQuery).collect { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _uiState.update { state ->
-                        state.copy(isLoading = true)
-                    }
-                }
-                is Resource.Success -> {
-                    _uiState.update { state ->
-                        state.copy(searchedGames = resource.data)
-                    }
-                }
-                is Resource.Error -> {
-                    _uiState.update { state ->
-                        state.copy(error = resource.message)
-                    }
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(searchedGames = resource.data)
                 }
             }
         }
     }
 
-    private fun favoriteIconClicked(game: GameUiModel) {
-        viewModelScope.launch {
-            addOrRemoveGameFromFavoriteUseCase.invoke(game)
-        }
+    private fun favoriteIconClicked(game: GameUiModel) = viewModelScope.launch {
+        addOrRemoveGameFromFavoriteUseCase.invoke(game)
     }
 }

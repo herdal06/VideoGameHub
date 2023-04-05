@@ -1,13 +1,13 @@
 package com.herdal.videogamehub.presentation.game_detail
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.herdal.videogamehub.common.Resource
+import com.herdal.videogamehub.common.base.BaseViewModel
 import com.herdal.videogamehub.domain.use_case.game.GetGameDetailsUseCase
 import com.herdal.videogamehub.domain.use_case.game_screenshots.GetScreenshotsUseCase
 import com.herdal.videogamehub.domain.use_case.trailer.GetGameTrailersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,10 +16,9 @@ class GameDetailViewModel @Inject constructor(
     private val getGameDetailsUseCase: GetGameDetailsUseCase,
     private val getScreenshotsUseCase: GetScreenshotsUseCase,
     private val getGameTrailersUseCase: GetGameTrailersUseCase
-) : ViewModel() {
+) : BaseViewModel<GameDetailUiState>() {
 
-    private val _uiState = MutableStateFlow(GameDetailUiState())
-    val uiState: StateFlow<GameDetailUiState> = _uiState.asStateFlow()
+    override fun getInitialUiState(): GameDetailUiState = GameDetailUiState()
 
     fun handleEvent(event: GameDetailUiEvent) {
         when (event) {
@@ -31,21 +30,11 @@ class GameDetailViewModel @Inject constructor(
 
     fun getGameById(id: Int) = viewModelScope.launch {
         getGameDetailsUseCase.invoke(id).collect { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _uiState.update { state ->
-                        state.copy(isLoading = true)
-                    }
-                }
-                is Resource.Success -> {
-                    _uiState.update { state ->
-                        state.copy(gameDetail = resource.data)
-                    }
-                }
-                is Resource.Error -> {
-                    _uiState.update { state ->
-                        state.copy(error = resource.message)
-                    }
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(gameDetail = resource.data)
                 }
             }
         }
@@ -53,21 +42,11 @@ class GameDetailViewModel @Inject constructor(
 
     fun getScreenshots(gameId: Int) = viewModelScope.launch {
         getScreenshotsUseCase.invoke(gameId).collect { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _uiState.update { state ->
-                        state.copy(isLoading = true)
-                    }
-                }
-                is Resource.Success -> {
-                    _uiState.update { state ->
-                        state.copy(screenshots = resource.data)
-                    }
-                }
-                is Resource.Error -> {
-                    _uiState.update { state ->
-                        state.copy(error = resource.message)
-                    }
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(screenshots = resource.data)
                 }
             }
         }
@@ -75,21 +54,11 @@ class GameDetailViewModel @Inject constructor(
 
     fun getTrailers(gameId: Int) = viewModelScope.launch {
         getGameTrailersUseCase(gameId).onEach { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _uiState.update { state ->
-                        state.copy(isLoading = true)
-                    }
-                }
-                is Resource.Success -> {
-                    _uiState.update { state ->
-                        state.copy(trailers = resource.data)
-                    }
-                }
-                is Resource.Error -> {
-                    _uiState.update { state ->
-                        state.copy(error = resource.message)
-                    }
+            updateUiState { state ->
+                when (resource) {
+                    is Resource.Error -> state.copy(error = resource.message)
+                    is Resource.Loading -> state.copy(isLoading = true)
+                    is Resource.Success -> state.copy(trailers = resource.data)
                 }
             }
         }
